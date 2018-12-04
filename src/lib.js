@@ -8,21 +8,28 @@ const extractLines = function(file,lineRequired){
 };
 
 const extractBytes = function(file,wordRequired){
-  let result = file.split('').slice(0,wordRequired);
-  return result.join('');
+  let result = file.slice(0,wordRequired);
+  return result;
 };
 
 const getHeadType = function(inputs){
   let list = inputs.join('');
-  if(list.split('').includes('c')){
+  if(list.includes('-c')){
     return extractBytes;
   }
   return extractLines;
 };
 
 const findInteger = function(input){
-  let list = input.join('').split('');
-  return parseInt(list.reverse());
+  let index = 0;
+  let list = input.join('');
+  while(!parseInt(list) && index < input.join().length){
+    list = input.join('');
+    index++;
+    list = list.slice(index)
+  }
+  return parseInt(list);
 };
+
 
 module.exports = {createHeading, extractLines, extractBytes, getHeadType, findInteger};

@@ -77,9 +77,9 @@ describe('findInteger', function(){
     assert.equal(''+findInteger(['./head.js','-c']),'NaN');
   });
 
-  it('should return last integer when input have more then one integer', function(){
-    assert.equal(findInteger(['-n1','-c2']),2);
-    assert.equal(findInteger(['./head.js','8','-c5']),5);
+  it('should return first integer when input have more then one integer', function(){
+    assert.equal(findInteger(['-n1','-c2']),1);
+    assert.equal(findInteger(['./head.js','c','12']),12);
   });
 
 });
