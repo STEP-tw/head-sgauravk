@@ -1,4 +1,4 @@
-const createHead = function(head){
+const createHeading = function(head){
   return '==> ' + head + ' <==';
 };
 
@@ -7,7 +7,7 @@ const extractLines = function(file,lineRequired){
   return result.join('\n');
 };
 
-const extractWords = function(file,wordRequired){
+const extractBytes = function(file,wordRequired){
   let result = file.split('').slice(0,wordRequired);
   return result.join('');
 };
@@ -15,7 +15,7 @@ const extractWords = function(file,wordRequired){
 const getHeadType = function(inputs){
   let list = inputs.join('').split('');
   if(list.includes('c')){
-    return extractWords;
+    return extractBytes;
   }
   return extractLines;
 };
@@ -25,4 +25,4 @@ const findInteger = function(input){
   return parseInt(list.reverse());
 };
 
-module.exports = {createHead, extractLines, extractWords, getHeadType, findInteger};
+module.exports = {createHeading, extractLines, extractBytes, getHeadType, findInteger};

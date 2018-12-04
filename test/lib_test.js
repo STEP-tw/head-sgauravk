@@ -1,10 +1,10 @@
 const assert = require('assert');
-const {createHead, extractLines, extractWords, findInteger} = require('../src/lib.js');
+const {createHeading, extractLines, extractBytes, findInteger} = require('../src/lib.js');
 
-describe('createHead', function(){
-  it('shold create a head line above a file content', function(){
-    assert.equal(createHead('lib.js'),'==> lib.js <==');
-    assert.equal(createHead('createHead.js'),'==> createHead.js <==');
+describe('createHeading', function(){
+  it('should create a head line using a file name', function(){
+    assert.equal(createHeading('lib.js'),'==> lib.js <==');
+    assert.equal(createHeading('createHead.js'),'==> createHead.js <==');
   });
 });
 
@@ -16,11 +16,11 @@ describe('extractLines', function(){
   });
 });
 
-describe('extractWords', function(){
-  it('should give the numbers of words we want from a file', function(){
+describe('extractBytes', function(){
+  it('should give the number of bytes we want from a file', function(){
     let input = 'this\nis\na\nsample\nline';
-    assert.equal(extractWords(input,1),'t');
-    assert.equal(extractWords(input,5),'this\n');
+    assert.equal(extractBytes(input,1),'t');
+    assert.equal(extractBytes(input,5),'this\n');
   });
 });
 
