@@ -30,4 +30,3 @@ describe('findInteger', function(){
     assert.equal(findInteger(['./head.js','-c5']),5);
   });
 });
-

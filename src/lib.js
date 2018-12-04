@@ -25,4 +25,4 @@ const findInteger = function(input){
   return parseInt(list.reverse());
 };
 
-module.exports = {createHead, extractLines, extractWords, findInteger};
+module.exports = {createHead, extractLines, extractWords, getHeadType, findInteger};
