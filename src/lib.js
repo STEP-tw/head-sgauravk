@@ -2,4 +2,10 @@ const createHead = function(head){
   return '==> ' + head + ' <==';
 };
 
-module.exports = {createHead};
+const extrectLines = function(file,lineRequired){
+  let result = file.split('\n').slice(0,lineRequired);
+  return result.join('\n');
+};
+
+
+module.exports = {createHead, extrectLines};
