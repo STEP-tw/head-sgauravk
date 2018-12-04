@@ -2,12 +2,12 @@ const createHead = function(head){
   return '==> ' + head + ' <==';
 };
 
-const extrectLines = function(file,lineRequired){
+const extractLines = function(file,lineRequired){
   let result = file.split('\n').slice(0,lineRequired);
   return result.join('\n');
 };
 
-const extrectWords = function(file,wordRequired){
+const extractWords = function(file,wordRequired){
   let result = file.split('').slice(0,wordRequired);
   return result.join('');
 };
@@ -15,11 +15,14 @@ const extrectWords = function(file,wordRequired){
 const getHeadType = function(inputs){
   let list = inputs.join('').split('');
   if(list.includes('c')){
-    return extrectWords;
+    return extractWords;
   }
-  return extrectLines;
+  return extractLines;
 };
 
+const findInteger = function(input){
+  let list = input.join('').split('');
+  return parseInt(list.reverse());
+};
 
-
-module.exports = {createHead, extrectLines, extrectWords, getHeadType};
+module.exports = {createHead, extractLines, extractWords, findInteger};
