@@ -14,7 +14,7 @@ const extractBytes = function(file,wordRequired){
 
 const getHeadType = function(inputs){
   let list = inputs.join('');
-  if(list.includes('-c')){
+  if(list.includes('c')){
     return extractBytes;
   }
   return extractLines;
@@ -28,7 +28,7 @@ const findInteger = function(input){
     index++;
     list = list.slice(index)
   }
-  return parseInt(list);
+  return Math.abs(parseInt(list));
 };
 
 
