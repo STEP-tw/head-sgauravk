@@ -13,8 +13,8 @@ const extractBytes = function(file,wordRequired){
 };
 
 const getHeadType = function(inputs){
-  let list = inputs.join('').split('');
-  if(list.includes('c')){
+  let list = inputs.join('');
+  if(list.split('').includes('c')){
     return extractBytes;
   }
   return extractLines;

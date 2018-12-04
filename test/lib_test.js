@@ -1,5 +1,5 @@
 const assert = require('assert');
-const {createHeading, extractLines, extractBytes, findInteger} = require('../src/lib.js');
+const {createHeading, extractLines, extractBytes, getHeadType, findInteger} = require('../src/lib.js');
 
 describe('createHeading', function(){
 
@@ -46,6 +46,20 @@ describe('extractBytes', function(){
   it('should give the number of bytes when file size is less then user input', function(){
     assert.equal(extractBytes('line',5),'line');
     assert.equal(extractBytes('sample\nfile',15),'sample\nfile');
+  });
+
+});
+
+
+describe('getHeadType', function(){
+
+  it('should return the function according to the user input', function(){
+    assert.equal(''+getHeadType(['node','head.js','-n5']),''+extractLines);
+    assert.equal(''+getHeadType(['node','head.js','-c3','file1']),''+extractBytes);
+  });
+
+  it('should return extractLines function when no type is given', function(){
+    assert.equal(''+getHeadType(['node','head.js']),''+extractLines);
   });
 
 });
