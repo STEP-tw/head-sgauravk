@@ -9,7 +9,7 @@ const main = function(){
   for(let file of filesList){
     let content = fs.readFileSync(file, 'utf8');
     if (filesList.length > 1){
-      console.log(delimeter,createHeading(file));
+      console.log(delimeter + createHeading(file));
       delimeter = '\n';
     }
     console.log(getHeadType(inputs)(content,findInteger(inputs)));
