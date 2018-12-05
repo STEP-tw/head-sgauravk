@@ -1,14 +1,14 @@
-const createHeading = function(head){
-  return '==> ' + head + ' <==';
+const createHeading = function(fileName){
+  return '==> ' + fileName + ' <==';
 };
 
-const extractLines = function(file,lineRequired){
-  let result = file.split('\n').slice(0,lineRequired);
+const extractLines = function(file,linesRequired){
+  let result = file.split('\n').slice(0,linesRequired);
   return result.join('\n');
 };
 
-const extractBytes = function(file,wordRequired){
-  let result = file.slice(0,wordRequired);
+const extractBytes = function(file,BytesRequired){
+  let result = file.slice(0,BytesRequired);
   return result;
 };
 
