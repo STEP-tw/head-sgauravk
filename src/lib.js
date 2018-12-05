@@ -31,5 +31,16 @@ const findInteger = function(input){
   return Math.abs(parseInt(list)) || 10;
 };
 
+const head = function(fs,inputs,filesList){
+  let delimiter = '';
+  for (let file of filesList){
+    let content = fs.readFileSync(file, 'utf8');
+    if (filesList.length > 1){
+      console.log(delimiter + createHeading(file));
+      delimiter = '\n';
+    }
+    console.log(getHeadType(inputs)(content,findInteger(inputs)));
+  }
+};
 
-module.exports = {createHeading, extractLines, extractBytes, getHeadType, findInteger};
+module.exports = {createHeading, extractLines, extractBytes, getHeadType, findInteger, head};
