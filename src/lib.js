@@ -28,7 +28,7 @@ const findInteger = function(input){
     index++;
     list = list.slice(index);
   }
-  return Math.abs(parseInt(list));
+  return Math.abs(parseInt(list)) || 10;
 };
 
 
