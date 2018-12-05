@@ -26,7 +26,7 @@ const findInteger = function(input){
   while(!parseInt(list) && index < input.join().length){
     list = input.join('');
     index++;
-    list = list.slice(index)
+    list = list.slice(index);
   }
   return Math.abs(parseInt(list));
 };
