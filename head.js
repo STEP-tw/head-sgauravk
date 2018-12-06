@@ -5,7 +5,7 @@ const main = function(){
   let inputs = process.argv.slice(2);
   let filesList = inputs.filter(file => file.includes('.'));
   inputs = inputs.slice(0, inputs.length-filesList.length);
-  head(fs,inputs,filesList);
+  head(fs.readFileSync,inputs,filesList);
 };
 
 main();

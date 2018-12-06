@@ -24,23 +24,35 @@ const findInteger = function(input){
   let index = 0;
   let list = input.join('');
   while(!parseInt(list) && index < input.join().length){
+    if (parseInt(list) == 0){ return 0; }
     list = input.join('');
     index++;
     list = list.slice(index);
   }
-  return Math.abs(parseInt(list)) || 10;
+  return Math.abs(parseInt(list) || 10);
 };
 
 const head = function(fs,inputs,filesList){
   let delimiter = '';
+  checkError(inputs);
   for (let file of filesList){
-    let content = fs.readFileSync(file, 'utf8');
+    let content = fs(file, 'utf8');
     if (filesList.length > 1){
       console.log(delimiter + createHeading(file));
       delimiter = '\n';
     }
     console.log(getHeadType(inputs)(content,findInteger(inputs)));
   }
+};
+ 
+const checkError = function(input){
+  if (findInteger(input) == 0 && getHeadType(input) == extractLines){
+    console.log('head: illegal line count -- 0');
+  }
+  if (findInteger(input) == 0 && getHeadType(input) == extractBytes){
+    console.log('head: illegal byte count -- 0');
+  }
+  return process.exit();
 };
 
 module.exports = {createHeading, extractLines, extractBytes, getHeadType, findInteger, head};
