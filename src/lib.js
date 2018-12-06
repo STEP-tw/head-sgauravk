@@ -14,7 +14,7 @@ const extractBytes = function(file,BytesRequired){
 
 const getHeadType = function(inputs){
   let list = inputs.join('');
-  if(list.includes('c')){
+  if(list.includes('-c')){
     return extractBytes;
   }
   return extractLines;
@@ -48,11 +48,12 @@ const head = function(fs,inputs,filesList){
 const checkError = function(input){
   if (findInteger(input) == 0 && getHeadType(input) == extractLines){
     console.log('head: illegal line count -- 0');
+    process.exit();
   }
   if (findInteger(input) == 0 && getHeadType(input) == extractBytes){
     console.log('head: illegal byte count -- 0');
+    process.exit();
   }
-  return process.exit();
 };
 
 module.exports = {createHeading, extractLines, extractBytes, getHeadType, findInteger, head};
