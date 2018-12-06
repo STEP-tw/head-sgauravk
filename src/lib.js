@@ -15,9 +15,9 @@ const extractBytes = function(file,BytesRequired){
 const getHeadType = function(inputs){
   let list = inputs.join('');
   if(list.includes('-c')){
-    return extractBytes;
+    return 'extractBytes';
   }
-  return extractLines;
+  return 'extractLines';
 };
 
 const findInteger = function(input){
@@ -29,7 +29,22 @@ const findInteger = function(input){
     index++;
     list = list.slice(index);
   }
+  if(!input.join('').includes('-c') && !input.join('').includes('-n')){
+    return Math.abs(parseInt(list));
+  }
   return parseInt(list);
+};
+
+const findIllegalVal = function(input){
+  input = input.join('');
+  let result = '';
+  for(let count=0; count<input.length; count++){
+    if(input[count] != '-' && input[count] != 'n' 
+      && input[count] != 'c' && !input[count].match(/[0-9]/)){
+      result = result+input[count];
+    }
+  }
+  return result;
 };
 
 const head = function(readFileSync,existsFileSync,inputs,filesList){
@@ -46,17 +61,18 @@ const head = function(readFileSync,existsFileSync,inputs,filesList){
       console.log(delimiter + createHeading(filesList[index]));
       delimiter = '\n';
     }
-    console.log(getHeadType(inputs)(content,findInteger(inputs) || 10));
+    console.log(eval(getHeadType(inputs))(content,findInteger(inputs) || 10));
   }
 };
  
 const checkError = function(input){
-  if (findInteger(input) < 1 && getHeadType(input) == extractLines){
-    console.log('head: illegal line count --',findInteger(input));
+  let object = {'extractLines':'line count --','extractBytes':'byte count --'};
+  if (findInteger(input) < 1){
+    console.log('head: illegal',object[getHeadType(input)],findInteger(input));
     process.exit();
   }
-  if (findInteger(input) < 1 && getHeadType(input) == extractBytes){
-    console.log('head: illegal byte count --',findInteger(input));
+  if (findIllegalVal(input)){
+    console.log('head: illegal',object[getHeadType(input)],findIllegalVal(input));
     process.exit();
   }
 };
