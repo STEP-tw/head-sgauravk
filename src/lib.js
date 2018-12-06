@@ -36,13 +36,12 @@ const findInteger = function(input){
 };
 
 const findIllegalVal = function(input){
+  let list = 'abdefghijklmopqrstuvwxyz';
+  list = list.split('');
   input = input.join('');
   let result = '';
-  for(let count=0; count<input.length; count++){
-    if(input[count] != '-' && input[count] != 'n' 
-      && input[count] != 'c' && !input[count].match(/[0-9]/)){
-      result = result+input[count];
-    }
+  if (list.some(x=>input.includes(x))){
+    result = input.slice(2);
   }
   return result;
 };
