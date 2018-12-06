@@ -32,13 +32,18 @@ const findInteger = function(input){
   return Math.abs(parseInt(list) || 10);
 };
 
-const head = function(fs,inputs,filesList){
+const head = function(readFileSync,existsFileSync,inputs,filesList){
   let delimiter = '';
   checkError(inputs);
-  for (let file of filesList){
-    let content = fs(file, 'utf8');
+  for (let index=0; index<filesList.length; index++){
+    if (!existsFileSync(filesList[index])){
+      console.log('head:',filesList[index]+': No such file or directory');
+      index++;
+    }
+    if (index == filesList.length){ process.exit();}
+    let content = readFileSync(filesList[index], 'utf8');
     if (filesList.length > 1){
-      console.log(delimiter + createHeading(file));
+      console.log(delimiter + createHeading(filesList[index]));
       delimiter = '\n';
     }
     console.log(getHeadType(inputs)(content,findInteger(inputs)));
