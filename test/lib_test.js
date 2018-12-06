@@ -72,9 +72,9 @@ describe('findInteger', function(){
     assert.equal(findInteger(['./head.js','-c5']),5);
   });
 
-  it('should return 10 when input have no integer', function(){
-    assert.equal(''+findInteger(['-n','-c']),10);
-    assert.equal(''+findInteger(['./head.js','-c']),10);
+  it('should return NaN when input have no integer', function(){
+    assert.equal(''+findInteger(['-n','-c']),''+NaN);
+    assert.equal(''+findInteger(['./head.js','-c']),''+NaN);
   });
 
   it('should return first integer when input have more then one integer', function(){

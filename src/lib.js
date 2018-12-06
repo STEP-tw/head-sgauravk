@@ -29,7 +29,7 @@ const findInteger = function(input){
     index++;
     list = list.slice(index);
   }
-  return Math.abs(parseInt(list) || 10);
+  return parseInt(list);
 };
 
 const head = function(readFileSync,existsFileSync,inputs,filesList){
@@ -46,17 +46,17 @@ const head = function(readFileSync,existsFileSync,inputs,filesList){
       console.log(delimiter + createHeading(filesList[index]));
       delimiter = '\n';
     }
-    console.log(getHeadType(inputs)(content,findInteger(inputs)));
+    console.log(getHeadType(inputs)(content,findInteger(inputs) || 10));
   }
 };
  
 const checkError = function(input){
-  if (findInteger(input) == 0 && getHeadType(input) == extractLines){
-    console.log('head: illegal line count -- 0');
+  if (findInteger(input) < 1 && getHeadType(input) == extractLines){
+    console.log('head: illegal line count --',findInteger(input));
     process.exit();
   }
-  if (findInteger(input) == 0 && getHeadType(input) == extractBytes){
-    console.log('head: illegal byte count -- 0');
+  if (findInteger(input) < 1 && getHeadType(input) == extractBytes){
+    console.log('head: illegal byte count --',findInteger(input));
     process.exit();
   }
 };
