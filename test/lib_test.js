@@ -115,4 +115,5 @@ describe("extractError", function() {
     let expectedOutput = "head: illegal line count -- 1r";
     assert.equal(extractError(["-n1r"]), expectedOutput);
   });
+
 });

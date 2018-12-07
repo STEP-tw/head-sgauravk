@@ -51,45 +51,37 @@ const findIllegalVal = function(input) {
 const extractError = function(input) {
   let object = { extractLines: "line count --", extractBytes: "byte count --" };
   if (findIllegalVal(input) || findInteger(input) < 1) {
-    return (
-      "head: illegal " +
-      object[getHeadType(input)] +
-      " " +
-      (findIllegalVal(input) || findInteger(input))
-    );
+    return ("head: illegal "+object[getHeadType(input)]+" "+(findIllegalVal(input)||findInteger(input)));
   }
 };
+
+const reducer = function(result,fileName){
+  const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
+  if(existsFileSync(fileName)){
+    let content = readFileSync(fileName, "utf8");
+    output.push(delimiter + createHeading(fileName));
+    output.push(eval(getHeadType(inputs))(content, findInteger(inputs) || 10));
+    result.delimiter = "\n";
+    return result;
+  }
+  result.delimiter = "\n";
+  output.push('head: '+fileName+': No such file or directory');
+  return result;
+}
 
 const head = function(readFileSync, existsFileSync, inputs, filesList) {
   let delimiter = "";
+  let output = [];
+  let result = {readFileSync, existsFileSync, inputs, output, delimiter}
   if (extractError(inputs)) {
-    console.log(extractError(inputs));
-    return;
+    return extractError(inputs);
   }
-  for (let index = 0; index < filesList.length; index++) {
-    if (!existsFileSync(filesList[index])) {
-      console.log("head:", filesList[index] + ": No such file or directory");
-      index++;
-    }
-    if (index >= filesList.length) {
-      return;
-    }
-    let content = readFileSync(filesList[index], "utf8");
-    if (filesList.length > 1) {
-      console.log(delimiter + createHeading(filesList[index]));
-      delimiter = "\n";
-    }
-    console.log(eval(getHeadType(inputs))(content, findInteger(inputs) || 10));
+  if(filesList.length == 1 && existsFileSync(filesList[0])){
+    let content = readFileSync(filesList[0], "utf8");
+    return (eval(getHeadType(inputs))(content, findInteger(inputs) || 10));
   }
+  return filesList.reduce(reducer,result)['output'].join('\n');
 };
 
-module.exports = {
-  createHeading,
-  extractLines,
-  extractBytes,
-  getHeadType,
-  findInteger,
-  head,
-  findIllegalVal,
-  extractError
-};
+module.exports = { createHeading, extractLines, extractBytes, 
+  getHeadType, findInteger, head, findIllegalVal, extractError }; 
