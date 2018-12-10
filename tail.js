@@ -1,18 +1,12 @@
-/* 
-  Usage:
-  node ./tail.js file1
-  node ./tail.js -n5 file1
-  node ./tail.js -n 5 file1
-  node ./tail.js -5 file1
-  node ./tail.js file1 file2
-  node ./tail.js -n 5 file1 file2
-  node ./tail.js -n5 file1 file2
-  node ./tail.js -5 file1 file2 
-  node ./tail.js -c5 file1
-  node ./tail.js -c 5 file1
-  node ./tail.js -c5 file1 file2
-  node ./tail.js -c 5 file1 file2
-*/
+const fs = require('fs');
+const {tail} = require('./src/lib.js');
 
+const main = function(){
+  let inputs = process.argv.slice(2);
+  let filesList = inputs.filter(file => !file.startsWith('-') && !file.match(/^\d/));
+  inputs = inputs.slice(0, inputs.length-filesList.length);
+  console.log(tail(fs.readFileSync,fs.existsSync,inputs,filesList));
+};
 
+main();
 

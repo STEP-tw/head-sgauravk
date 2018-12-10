@@ -2,13 +2,13 @@ const createHeading = function(fileName) {
   return "==> " + fileName + " <==";
 };
 
-const extractLines = function(file, linesRequired) {
-  let result = file.split("\n").slice(0, linesRequired);
+const extractLines = function(index, file, linesRequired) {
+  let result = file.split("\n").splice(index, linesRequired);
   return result.join("\n");
 };
 
-const extractBytes = function(file, BytesRequired) {
-  let result = file.slice(0, BytesRequired);
+const extractBytes = function(index, file, BytesRequired) {
+  let result = file.slice(index, BytesRequired);
   return result;
 };
 
@@ -55,12 +55,12 @@ const extractError = function(input) {
   }
 };
 
-const reducer = function(result,fileName){
+const headReducer = function(result,fileName){
   const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
     output.push(delimiter + createHeading(fileName));
-    output.push(eval(getHeadType(inputs))(content, findInteger(inputs) || 10));
+    output.push(eval(getHeadType(inputs))(0, content, findInteger(inputs) || 10));
     result.delimiter = "\n";
     return result;
   }
@@ -78,10 +78,41 @@ const head = function(readFileSync, existsFileSync, inputs, filesList) {
   }
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
-    return (eval(getHeadType(inputs))(content, findInteger(inputs) || 10));
+    return (eval(getHeadType(inputs))(0, content, findInteger(inputs) || 10));
   }
-  return filesList.reduce(reducer,result)['output'].join('\n');
+  return filesList.reduce(headReducer,result)['output'].join('\n');
 };
 
+const tailReducer = function(result,fileName){
+  const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
+  if(existsFileSync(fileName)){
+    let content = readFileSync(fileName, "utf8");
+    let index = content.split('\n').length - findInteger(result.inputs);
+    output.push(delimiter + createHeading(fileName));
+    output.push(eval(getHeadType(inputs))(index-1, content, findInteger(inputs) || 10));
+    result.delimiter = "\n";
+    return result;
+  }
+  result.delimiter = "\n";
+  output.push('tail: '+fileName+': No such file or directory');
+  return result;
+}
+
+const tail = function(readFileSync, existsFileSync, inputs, filesList) {
+  let delimiter = "";
+  let output = [];
+  let result = {readFileSync, existsFileSync, inputs, output, delimiter}
+  if (extractError(inputs)) {
+    return extractError(inputs);
+  }
+  if(filesList.length == 1 && existsFileSync(filesList[0])){
+    let content = readFileSync(filesList[0], "utf8");
+    let index = content.split('\n').length - findInteger(inputs);
+    return (eval(getHeadType(inputs))(index-1, content, findInteger(inputs) || 10));
+  }
+  return filesList.reduce(tailReducer,result)['output'].join('\n');
+};
+
+
 module.exports = { createHeading, extractLines, extractBytes, 
-  getHeadType, findInteger, head, findIllegalVal, extractError }; 
+  getHeadType, findInteger, findIllegalVal, extractError, head, tail }; 
