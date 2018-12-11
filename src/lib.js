@@ -8,7 +8,7 @@ const extractLines = function(index, file, linesRequired) {
 };
 
 const extractBytes = function(index, file, BytesRequired) {
-  let result = file.slice(index, BytesRequired);
+  let result = file.slice(index,BytesRequired);
   return result;
 };
 
@@ -87,9 +87,9 @@ const tailReducer = function(result,fileName){
   const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    let index = content.split('\n').length - findInteger(result.inputs);
+    let index = content.split('\n').length - (findInteger(result.inputs)||10);
     output.push(delimiter + createHeading(fileName));
-    output.push(eval(getHeadType(inputs))(index-1, content, findInteger(inputs) || 10));
+    output.push(eval(getHeadType(inputs))(index-1, content, findInteger(inputs)||10));
     result.delimiter = "\n";
     return result;
   }
@@ -107,8 +107,8 @@ const tail = function(readFileSync, existsFileSync, inputs, filesList) {
   }
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
-    let index = content.split('\n').length - findInteger(inputs);
-    return (eval(getHeadType(inputs))(index-1, content, findInteger(inputs) || 10));
+    let index = content.split('\n').length - (findInteger(inputs)||10);
+    return (eval(getHeadType(inputs))(index-1, content, findInteger(inputs)||10));
   }
   return filesList.reduce(tailReducer,result)['output'].join('\n');
 };
