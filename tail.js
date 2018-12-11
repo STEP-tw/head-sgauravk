@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {tail} = require('./src/lib.js');
+const {tail} = require('./src/lIb.js');
 
 const main = function(){
   let inputs = process.argv.slice(2);
