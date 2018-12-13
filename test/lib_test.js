@@ -6,7 +6,9 @@ const {
   getHeadType,
   findInteger,
   findIllegalVal,
-  extractError
+  extractError,
+  head,
+  tail
 } = require("../src/lib.js");
 
 describe("createHeading", function() {

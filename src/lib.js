@@ -94,6 +94,7 @@ const tailReducer = function(result,fileName){
     let object = {'extractLines':content.split('\n').length - (findInteger(result.inputs)||10),
     'extractBytes':content.length - (findInteger(result.inputs)||10)}
     let index = object[getHeadType(inputs)];
+    if (index < 0) { index = 0 }
     output.push(delimiter + createHeading(fileName));
     output.push(eval(getHeadType(inputs))(index, content, findInteger(inputs)||10));
     result.delimiter = "\n";
