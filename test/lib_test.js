@@ -13,6 +13,7 @@ const {
 
 
 describe("createHeading", function(){
+
   it("should create a head line using a file name", function(){
     assert.equal(createHeading("lib.js"), "==> lib.js <==");
     assert.equal(createHeading("createHead.js"), "==> createHead.js <==");
@@ -25,9 +26,12 @@ describe("createHeading", function(){
   it("should create a head line when no file name is given", function(){
     assert.equal(createHeading(), "==> undefined <==");
   });
+
 });
 
+
 describe("extractLines", function(){
+
   it("should give the numbers of line we want of a file", function(){
     let input = "this\nis\na\nsample\nline";
     assert.equal(extractLines(0,input, 1), "this");
@@ -38,9 +42,11 @@ describe("extractLines", function(){
     assert.equal(extractLines(0,"sample\nline", 12), "sample\nline");
     assert.equal(extractLines(0,"test\nline", 15), "test\nline");
   });
+
 });
 
 describe("extractBytes", function(){
+
   it("should give the number of bytes we want from a file", function(){
     let input = "this\nis\na\nsample\nline";
     assert.equal(extractBytes(0,input, 1), "t");
@@ -51,23 +57,24 @@ describe("extractBytes", function(){
     assert.equal(extractBytes(0,"line", 5), "line");
     assert.equal(extractBytes(0,"sample\nfile", 15), "sample\nfile");
   });
+
 });
 
 describe("getHeadType", function(){
+
   it("should return the function according to the user input", function(){
     assert.equal(getHeadType(["node", "head.js", "-n5"]), "extractLines");
-    assert.equal(
-      getHeadType(["node", "head.js", "-c3", "file1"]),
-      "extractBytes"
-    );
+    assert.equal(getHeadType(["node", "head.js", "-c3", "file1"]),"extractBytes");
   });
 
   it("should return extractLines function when no type is given", function(){
     assert.equal(getHeadType(["node", "head.js"]), "extractLines");
   });
+
 });
 
 describe("findInteger", function(){
+
   it("should return the integer from input", function(){
     assert.equal(findInteger(["-n1"]), 1);
     assert.equal(findInteger(["./head.js", "-c5"]), 5);
@@ -82,9 +89,11 @@ describe("findInteger", function(){
     assert.equal(findInteger(["-n1", "-c2"]), 1);
     assert.equal(findInteger(["./head.js", "c", "12"]), 12);
   });
+
 });
 
 describe("findIllegalVal", function(){
+
   it("should return a empty string when no illegal count is given", function(){
     assert.equal(findIllegalVal(["-n1"]), "");
     assert.equal(findIllegalVal(["-n", "5"]), "");
@@ -95,9 +104,11 @@ describe("findIllegalVal", function(){
     assert.equal(findIllegalVal(["-n", "r1"]), "r1");
     assert.equal(findIllegalVal(["-n", "-1r"]), "-1r");
   });
+
 });
 
 describe("extractError", function(){
+
   it("should return the undefined when no error present in input", function(){
     assert.equal(extractError(["-n1"],'head'), undefined);
     assert.equal(extractError(["-n", "5"],'head'), undefined);
@@ -125,7 +136,7 @@ describe("extractError", function(){
 describe('HEAD: for single file', function(){
 
   let existsFile = function(file){
-    return true;
+    return [file,randomText].includes(file);
   }
 
   let readFile = function(file){
@@ -176,7 +187,7 @@ describe("HEAD: for multiple file", function(){
   let randomText = 'gaurav\nis\na\ngood\nboy';
 
   let existsFile = function(file){
-    return true;
+    return [file,randomText].includes(file);
   }
 
   let readFile = function(file){
@@ -221,6 +232,58 @@ describe("HEAD: for multiple file", function(){
     let expectedOutput = "==> randomText <==\ngaurav\n"
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(head(readRandomText,existsFile,["-c7"],["randomText", "randomText"]), expectedOutput);
+  });
+
+});
+
+
+describe("HEAD: errors handling", function(){
+
+  let file = '1\n2\n3\n4\n5\n6\n7\n8\n9\n10';
+  let randomText = 'gaurav\nis\na\ngood\nboy';
+
+  let existsFile = function(file){
+    return ['file','randomText'].includes(file);
+  }
+
+  let readFile = function(file){
+    return "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
+  };
+
+  let readRandomText = function(randomText){
+    return 'gaurav\nis\na\ngood\nboy';
+  }
+
+  it("should return the error message when given number of line is 0", function(){
+    expectedOutput = "head: illegal line count -- 0";
+    assert.equal(head(readFile,existsFile,["-n0"], [file]), expectedOutput);
+  });
+
+  it("should return the error message when  is count is 0 without -c or -n", function(){
+    expectedOutput = "head: illegal line count -- 0";
+    assert.equal(head(readFile,existsFile,["-0"],["file","randomText"]), expectedOutput);
+  });
+
+  it("should return the error message when  is count is invalid with -c or -n", function(){
+    expectedOutput = "head: illegal line count -- -12";
+    assert.equal(head(readFile,existsFile,["-n-12"],["file","randomText"]), expectedOutput);
+  });
+
+  it("should return the error message when  file is not present in the directory", function(){
+    expectedOutput = "head: README.mdafs: No such file or directory\n\n==> file <==\n1\n2\n3";
+    assert.equal(head(readFile,existsFile,["-n3"],["README.mdafs","file"]),expectedOutput);
+  });
+
+  it("should return the error message when given file is not present in directory", function(){
+    expectedOutput = "head: README.mdafs: No such file or directory";
+    assert.equal(head(readFile,existsFile,["-n3"], ["README.mdafs"]), expectedOutput);
+  });
+
+  it("should return the error message when -n or -c and then alphanumeric combination is given", function(){
+    let expectedOutput = "head: illegal line count -- u922";
+    assert.equal(head(readFile,existsFile,["-nu922"],["README.mdafs", "file"]),expectedOutput);
+    expectedOutput = "head: illegal byte count -- u922";
+    assert.equal(head(readFile,existsFile,["-cu922"],["README.mdafs", "randomText"]),expectedOutput);
   });
 
 });
