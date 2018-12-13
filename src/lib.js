@@ -38,7 +38,7 @@ const findInteger = function(input) {
 };
 
 const findIllegalVal = function(input) {
-  let list = "abdefghijklmopqrstuvwxyz0";
+  let list = "abdefghijklmopqrstuvwxyz";
   list = list.split("");
   input = input.join("");
   let result = "";
