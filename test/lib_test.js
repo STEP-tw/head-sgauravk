@@ -336,3 +336,58 @@ describe('TAIL: for single file', function(){
 
 });
 
+
+describe("TAIL: for multiple file", function(){
+
+  let file = '1\n2\n3\n4\n5\n6\n7\n8\n9\n10';
+  let randomText = 'gaurav\nis\na\ngood\nboy';
+
+  let existsFile = function(file){
+    return [file,randomText].includes(file);
+  }
+
+  let readFile = function(file){
+    return "10\n9\n8\n7\n6\n5\n4\n3\n2\n1";
+  };
+
+  let readRandomText = function(randomText){
+    return 'gaurav\nis\na\ngood\nboy';
+  }
+
+  it("should return the first 10 lines of file when count is not specified", function(){
+    let expectedOutput = "==> file <==\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1";
+    expectedOutput += '\n\n' + expectedOutput;
+    assert.equal(tail(readFile,existsFile,[],['file','file']), expectedOutput);
+  });
+
+  it("should return the given number of lines when only count is given", function(){
+    let expectedOutput = "==> file <==\n3\n2\n1"
+    expectedOutput+= '\n\n' + expectedOutput;
+    assert.equal(tail(readFile,existsFile,['-3'], ["file", "file"]), expectedOutput);
+  });
+
+  it("should return the given number of lines when count and option is given without spaces", function(){
+    let expectedOutput = "==> file <==\n2\n1"
+    expectedOutput+= '\n\n' + expectedOutput;
+    assert.equal(tail(readFile,existsFile,["-n2"], ['file','file']), expectedOutput);
+  });
+
+  it("should return the given number of lines when count and option is given with spaces", function(){
+    let expectedOutput = "==> file <==\n3\n2\n1"
+    expectedOutput+= '\n\n' + expectedOutput;
+    assert.equal(tail(readFile,existsFile,["-n", "3"],["file", "file"]), expectedOutput);
+  });
+
+  it("should return the given number of characters when count is given with spaces", function(){
+    let expectedOutput = "==> randomText <==\nboy";
+    expectedOutput += '\n\n' + expectedOutput;
+    assert.equal(tail(readRandomText,existsFile,["-c","3"],["randomText","randomText"]), expectedOutput);
+  });
+
+  it("should return the given number of characters when count is given without spaces", function(){
+    let expectedOutput = "==> randomText <==\nood\nboy"
+    expectedOutput+= '\n\n' + expectedOutput;
+    assert.equal(tail(readRandomText,existsFile,["-c7"],["randomText", "randomText"]), expectedOutput);
+  });
+
+});
