@@ -129,9 +129,40 @@ describe("extractError", function() {
 });
 
 
-describe('head', function(){
-  it('should give the first line of file', function(){
-    let file = '1\n2\n3\n4\n5\n6';
+describe('HEAD: for single file', function(){
+  let file = '1\n2\n3\n4\n5\n6\n7\n8\n9\n10';
+  let randomText = 'gaurav\nis\na\ngood\nboy';
+
+  it('should return the first line of file', function(){
     assert.equal(head(readFile,existsFile,['-n1'],[file]),'1');
   });
+
+  it('should return the two lines of file', function(){
+    assert.equal(head(readFile,existsFile,['-n2'],[file]),'1\n2');
+  });
+
+  it("should return the first 10 lines of file when count is not specified", function (){
+    assert.deepEqual(head(readFile,existsFile,[],[file]),file)
+  });
+  
+  it("should return the given number of lines when only count is given", function () {
+    assert.deepEqual(head(readFile,existsFile,['-3'],[file]), "1\n2\n3");
+  });
+  
+  it("should return the given number of lines when count and option is given without spaces", function () {
+    assert.deepEqual(head(readFile,existsFile,["-n2"], [file]), "1\n2");
+  });
+  
+  it("should return the given number of lines when count and option is given with spaces", function () {
+    assert.deepEqual(head(readFile,existsFile,["-n", "1"],[file]), '1');
+  });
+  
+  it("should return the given number of characters when count is given with spaces", function () {
+    assert.deepEqual(head(readFile,existsFile,["-c", "3"], [randomText]), "gau");
+  });
+  
+  it("should return the given number of characters when count is given without spaces", function () {
+    assert.deepEqual(head(readFile,existsFile,["-c7"], [randomText]), "gaurav\n");
+  });
+  
 });
