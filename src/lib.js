@@ -117,6 +117,7 @@ const tail = function(readFileSync, existsFileSync, inputs, filesList) {
     let object = {'extractLines':content.split('\n').length - (findInteger(result.inputs)||10),
       'extractBytes':content.length - (findInteger(result.inputs)||10)}
     let index = object[getHeadType(inputs)];
+    if (index < 0) { index = 0 }
     return (eval(getHeadType(inputs))(index, content, findInteger(inputs)||10));
   }
   return filesList.reduce(tailReducer,result)['output'].join('\n');
