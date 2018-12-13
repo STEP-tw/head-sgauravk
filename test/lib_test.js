@@ -288,3 +288,51 @@ describe("HEAD: errors handling", function(){
 
 });
 
+
+describe('TAIL: for single file', function(){
+
+  let existsFile = function(file){
+    return [file,randomText].includes(file);
+  }
+
+  let readFile = function(file){
+    return file;
+  };
+
+  let file = '1\n2\n3\n4\n5\n6\n7\n8\n9\n10';
+  let randomText = 'gaurav\nis\na\ngood\nboy';
+
+  it('should return the first line of file', function(){
+    assert.equal(tail(readFile,existsFile,['-n1'],[file]),'10');
+  });
+
+  it('should return the two lines of file', function(){
+    assert.equal(tail(readFile,existsFile,['-n2'],[file]),'9\n10');
+  });
+
+  it("should return the first 10 lines of file when count is not specified", function (){
+    assert.equal(tail(readFile,existsFile,[],[file]),file)
+  });
+
+  it("should return the given number of lines when only count is given", function(){
+    assert.equal(tail(readFile,existsFile,['-3'],[file]), "8\n9\n10");
+  });
+
+  it("should return the given number of lines when count and option is given without spaces", function(){
+    assert.equal(tail(readFile,existsFile,["-n2"], [file]), "9\n10");
+  });
+
+  it("should return the given number of lines when count and option is given with spaces", function(){
+    assert.equal(tail(readFile,existsFile,["-n", "1"],[file]), '10');
+  });
+
+  it("should return the given number of characters when count is given with spaces", function(){
+    assert.equal(tail(readFile,existsFile,["-c", "3"], [randomText]), "boy");
+  });
+
+  it("should return the given number of characters when count is given without spaces", function(){
+    assert.equal(tail(readFile,existsFile,["-c7"], [randomText]), "ood\nboy");
+  });
+
+});
+
