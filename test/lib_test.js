@@ -137,7 +137,7 @@ describe('HEAD: for single file', function(){
 
   let existsFile = function(file){
     return [file,randomText].includes(file);
-  }
+  };
 
   let readFile = function(file){
     return file;
@@ -155,7 +155,7 @@ describe('HEAD: for single file', function(){
   });
 
   it("should return the first 10 lines of file when count is not specified", function (){
-    assert.equal(head(readFile,existsFile,[],[file]),file)
+    assert.equal(head(readFile,existsFile,[],[file]),file);
   });
 
   it("should return the given number of lines when only count is given", function(){
@@ -192,7 +192,7 @@ describe("HEAD: for multiple file", function(){
 
   let existsFile = function(file){
     return [file,randomText].includes(file);
-  }
+  };
 
   let readFile = function(file){
     return "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
@@ -200,7 +200,7 @@ describe("HEAD: for multiple file", function(){
 
   let readRandomText = function(randomText){
     return 'gaurav\nis\na\ngood\nboy';
-  }
+  };
 
   it("should return the first 10 lines of file when count is not specified", function(){
     let expectedOutput = "==> file <==\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
@@ -209,19 +209,19 @@ describe("HEAD: for multiple file", function(){
   });
 
   it("should return the given number of lines when only count is given", function(){
-    let expectedOutput = "==> file <==\n1\n2\n3"
+    let expectedOutput = "==> file <==\n1\n2\n3";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(head(readFile,existsFile,['-3'], ["file", "file"]), expectedOutput);
   });
 
   it("should return the given number of lines when count and option is given without spaces", function(){
-    let expectedOutput = "==> file <==\n1\n2"
+    let expectedOutput = "==> file <==\n1\n2";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(head(readFile,existsFile,["-n2"], ['file','file']), expectedOutput);
   });
 
   it("should return the given number of lines when count and option is given with spaces", function(){
-    let expectedOutput = "==> file <==\n1\n2\n3"
+    let expectedOutput = "==> file <==\n1\n2\n3";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(head(readFile,existsFile,["-n", "3"],["file", "file"]), expectedOutput);
   });
@@ -233,7 +233,7 @@ describe("HEAD: for multiple file", function(){
   });
 
   it("should return the given number of characters when count is given without spaces", function(){
-    let expectedOutput = "==> randomText <==\ngaurav\n"
+    let expectedOutput = "==> randomText <==\ngaurav\n";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(head(readRandomText,existsFile,["-c7"],["randomText", "randomText"]), expectedOutput);
   });
@@ -248,7 +248,7 @@ describe("HEAD: errors handling", function(){
 
   let existsFile = function(file){
     return ['file','randomText'].includes(file);
-  }
+  };
 
   let readFile = function(file){
     return "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
@@ -256,7 +256,7 @@ describe("HEAD: errors handling", function(){
 
   let readRandomText = function(randomText){
     return 'gaurav\nis\na\ngood\nboy';
-  }
+  };
 
   it("should return the error message when given number of line is 0", function(){
     let expectedOutput = "head: illegal line count -- 0";
@@ -302,7 +302,7 @@ describe('TAIL: for single file', function(){
 
   let existsFile = function(file){
     return [file,randomText].includes(file);
-  }
+  };
 
   let readFile = function(file){
     return file;
@@ -320,7 +320,7 @@ describe('TAIL: for single file', function(){
   });
 
   it("should return the first 10 lines of file when count is not specified", function (){
-    assert.equal(tail(readFile,existsFile,[],[file]),file)
+    assert.equal(tail(readFile,existsFile,[],[file]),file);
   });
 
   it("should return the given number of lines when only count is given", function(){
@@ -357,7 +357,7 @@ describe("TAIL: for multiple file", function(){
 
   let existsFile = function(file){
     return [file,randomText].includes(file);
-  }
+  };
 
   let readFile = function(file){
     return "10\n9\n8\n7\n6\n5\n4\n3\n2\n1";
@@ -365,7 +365,7 @@ describe("TAIL: for multiple file", function(){
 
   let readRandomText = function(randomText){
     return 'gaurav\nis\na\ngood\nboy';
-  }
+  };
 
   it("should return the first 10 lines of file when count is not specified", function(){
     let expectedOutput = "==> file <==\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1";
@@ -374,19 +374,19 @@ describe("TAIL: for multiple file", function(){
   });
 
   it("should return the given number of lines when only count is given", function(){
-    let expectedOutput = "==> file <==\n3\n2\n1"
+    let expectedOutput = "==> file <==\n3\n2\n1";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(tail(readFile,existsFile,['-3'], ["file", "file"]), expectedOutput);
   });
 
   it("should return the given number of lines when count and option is given without spaces", function(){
-    let expectedOutput = "==> file <==\n2\n1"
+    let expectedOutput = "==> file <==\n2\n1";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(tail(readFile,existsFile,["-n2"], ['file','file']), expectedOutput);
   });
 
   it("should return the given number of lines when count and option is given with spaces", function(){
-    let expectedOutput = "==> file <==\n3\n2\n1"
+    let expectedOutput = "==> file <==\n3\n2\n1";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(tail(readFile,existsFile,["-n", "3"],["file", "file"]), expectedOutput);
   });
@@ -398,7 +398,7 @@ describe("TAIL: for multiple file", function(){
   });
 
   it("should return the given number of characters when count is given without spaces", function(){
-    let expectedOutput = "==> randomText <==\nood\nboy"
+    let expectedOutput = "==> randomText <==\nood\nboy";
     expectedOutput+= '\n\n' + expectedOutput;
     assert.equal(tail(readRandomText,existsFile,["-c7"],["randomText", "randomText"]), expectedOutput);
   });
@@ -413,7 +413,7 @@ describe("TAIL: errors handling", function(){
 
   let existsFile = function(file){
     return ['file','randomText'].includes(file);
-  }
+  };
 
   let readFile = function(file){
     return "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
@@ -421,7 +421,7 @@ describe("TAIL: errors handling", function(){
 
   let readRandomText = function(randomText){
     return 'gaurav\nis\na\ngood\nboy';
-  }
+  };
 
   it("should return the error message when given number of line is 0", function(){
     let expectedOutput = "tail: illegal offset -- 0";
