@@ -11,6 +11,14 @@ const {
   tail
 } = require("../src/lib.js");
 
+const readFile = function(file){
+  return file;
+};
+
+let existsFile = function(file){
+  return true;
+}
+
 describe("createHeading", function() {
   it("should create a head line using a file name", function() {
     assert.equal(createHeading("lib.js"), "==> lib.js <==");
@@ -118,4 +126,12 @@ describe("extractError", function() {
     assert.equal(extractError(["-n1r"],'head'), expectedOutput);
   });
 
+});
+
+
+describe('head', function(){
+  it('should give the first line of file', function(){
+    let file = '1\n2\n3\n4\n5\n6';
+    assert.equal(head(readFile,existsFile,['-n1'],[file]),'1');
+  });
 });
