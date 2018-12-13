@@ -391,3 +391,55 @@ describe("TAIL: for multiple file", function(){
   });
 
 });
+
+
+describe("TAIL: errors handling", function(){
+
+  let file = '1\n2\n3\n4\n5\n6\n7\n8\n9\n10';
+  let randomText = 'gaurav\nis\na\ngood\nboy';
+
+  let existsFile = function(file){
+    return ['file','randomText'].includes(file);
+  }
+
+  let readFile = function(file){
+    return "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
+  };
+
+  let readRandomText = function(randomText){
+    return 'gaurav\nis\na\ngood\nboy';
+  }
+
+  it("should return the error message when given number of line is 0", function(){
+    expectedOutput = "tail: illegal offset -- 0";
+    assert.equal(tail(readFile,existsFile,["-n0"], [file]), expectedOutput);
+  });
+
+  it("should return the error message when  is count is 0 without -c or -n", function(){
+    expectedOutput = "tail: illegal offset -- 0";
+    assert.equal(tail(readFile,existsFile,["-0"],["file","randomText"]), expectedOutput);
+  });
+
+  it("should return the error message when  is count is invalid with -c or -n", function(){
+    expectedOutput = "tail: illegal offset -- -12";
+    assert.equal(tail(readFile,existsFile,["-n-12"],["file","randomText"]), expectedOutput);
+  });
+
+  it("should return the error message when  file is not present in the directory", function(){
+    expectedOutput = "tail: README.mdafs: No such file or directory\n\n==> file <==\n8\n9\n10";
+    assert.equal(tail(readFile,existsFile,["-n3"],["README.mdafs","file"]),expectedOutput);
+  });
+
+  it("should return the error message when given file is not present in directory", function(){
+    expectedOutput = "tail: README.mdafs: No such file or directory";
+    assert.equal(tail(readFile,existsFile,["-n3"], ["README.mdafs"]), expectedOutput);
+  });
+
+  it("should return the error message when -n or -c and then alphanumeric combination is given", function(){
+    let expectedOutput = "tail: illegal offset -- u922";
+    assert.equal(tail(readFile,existsFile,["-nu922"],["README.mdafs", "file"]),expectedOutput);
+    expectedOutput = "tail: illegal offset -- u922";
+    assert.equal(tail(readFile,existsFile,["-cu922"],["README.mdafs", "randomText"]),expectedOutput);
+  });
+
+});
