@@ -178,6 +178,10 @@ describe('HEAD: for single file', function(){
     assert.equal(head(readFile,existsFile,["-c7"], [randomText]), "gaurav\n");
   });
 
+  it("should return the whole file when count is greter file size", function(){
+    assert.equal(head(readFile,existsFile,["-n10000"], [file]), file);
+  });
+
 });
 
 
@@ -255,28 +259,33 @@ describe("HEAD: errors handling", function(){
   }
 
   it("should return the error message when given number of line is 0", function(){
-    expectedOutput = "head: illegal line count -- 0";
+    let expectedOutput = "head: illegal line count -- 0";
     assert.equal(head(readFile,existsFile,["-n0"], [file]), expectedOutput);
   });
 
   it("should return the error message when  is count is 0 without -c or -n", function(){
-    expectedOutput = "head: illegal line count -- 0";
+    let expectedOutput = "head: illegal line count -- 0";
     assert.equal(head(readFile,existsFile,["-0"],["file","randomText"]), expectedOutput);
   });
 
   it("should return the error message when  is count is invalid with -c or -n", function(){
-    expectedOutput = "head: illegal line count -- -12";
+    let expectedOutput = "head: illegal line count -- -12";
     assert.equal(head(readFile,existsFile,["-n-12"],["file","randomText"]), expectedOutput);
   });
 
   it("should return the error message when  file is not present in the directory", function(){
-    expectedOutput = "head: README.mdafs: No such file or directory\n\n==> file <==\n1\n2\n3";
+    let expectedOutput = "head: README.mdafs: No such file or directory\n\n==> file <==\n1\n2\n3";
     assert.equal(head(readFile,existsFile,["-n3"],["README.mdafs","file"]),expectedOutput);
   });
 
   it("should return the error message when given file is not present in directory", function(){
-    expectedOutput = "head: README.mdafs: No such file or directory";
+    let expectedOutput = "head: README.mdafs: No such file or directory";
     assert.equal(head(readFile,existsFile,["-n3"], ["README.mdafs"]), expectedOutput);
+  });
+
+  it("should return the whole file when count is greter file size and other is not in the directory", function(){
+    let expectedOutput = "head: randomName: No such file or directory\n\n==> file <==\n"+file;
+    assert.equal(head(readFile,existsFile,["-n10000"], ["randomName","file"]), expectedOutput);
   });
 
   it("should return the error message when -n or -c and then alphanumeric combination is given", function(){
@@ -332,6 +341,10 @@ describe('TAIL: for single file', function(){
 
   it("should return the given number of characters when count is given without spaces", function(){
     assert.equal(tail(readFile,existsFile,["-c7"], [randomText]), "ood\nboy");
+  });
+
+  it("should return the whole file when count is greter file size", function(){
+    assert.equal(tail(readFile,existsFile,["-n10000"], [file]), file);
   });
 
 });
@@ -411,28 +424,33 @@ describe("TAIL: errors handling", function(){
   }
 
   it("should return the error message when given number of line is 0", function(){
-    expectedOutput = "tail: illegal offset -- 0";
+    let expectedOutput = "tail: illegal offset -- 0";
     assert.equal(tail(readFile,existsFile,["-n0"], [file]), expectedOutput);
   });
 
   it("should return the error message when  is count is 0 without -c or -n", function(){
-    expectedOutput = "tail: illegal offset -- 0";
+    let expectedOutput = "tail: illegal offset -- 0";
     assert.equal(tail(readFile,existsFile,["-0"],["file","randomText"]), expectedOutput);
   });
 
   it("should return the error message when  is count is invalid with -c or -n", function(){
-    expectedOutput = "tail: illegal offset -- -12";
+    let expectedOutput = "tail: illegal offset -- -12";
     assert.equal(tail(readFile,existsFile,["-n-12"],["file","randomText"]), expectedOutput);
   });
 
   it("should return the error message when  file is not present in the directory", function(){
-    expectedOutput = "tail: README.mdafs: No such file or directory\n\n==> file <==\n8\n9\n10";
+    let expectedOutput = "tail: README.mdafs: No such file or directory\n\n==> file <==\n8\n9\n10";
     assert.equal(tail(readFile,existsFile,["-n3"],["README.mdafs","file"]),expectedOutput);
   });
 
   it("should return the error message when given file is not present in directory", function(){
-    expectedOutput = "tail: README.mdafs: No such file or directory";
+    let expectedOutput = "tail: README.mdafs: No such file or directory";
     assert.equal(tail(readFile,existsFile,["-n3"], ["README.mdafs"]), expectedOutput);
+  });
+
+  it("should return the whole file when count is greter file size and other is invalid", function(){
+    let expectedOutput = "tail: README.mdsn: No such file or directory\n\n==> file <==\n"+file; 
+    assert.equal(tail(readFile,existsFile,["-n10000"],["README.mdsn","file"]), expectedOutput);
   });
 
   it("should return the error message when -n or -c and then alphanumeric combination is given", function(){
