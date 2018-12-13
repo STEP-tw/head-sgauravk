@@ -48,10 +48,14 @@ const findIllegalVal = function(input) {
   return result;
 };
 
-const extractError = function(input) {
-  let object = { extractLines: "line count --", extractBytes: "byte count --" };
+const extractError = function(input, type) {
+  let object = { head: {extractLines: "line count --", extractBytes: "byte count --" },
+    tail: "offset --" }
+    let variable = object[type];
+    if(type == 'head'){
+      variable = object[type][getHeadType(input)]; }
   if (findIllegalVal(input) || findInteger(input) < 1) {
-    return ("head: illegal "+object[getHeadType(input)]+" "+(findIllegalVal(input)||findInteger(input)));
+    return (type+": illegal "+variable+" "+(findIllegalVal(input)||findInteger(input)));
   }
 };
 
@@ -73,8 +77,8 @@ const head = function(readFileSync, existsFileSync, inputs, filesList) {
   let delimiter = "";
   let output = [];
   let result = {readFileSync, existsFileSync, inputs, output, delimiter}
-  if (extractError(inputs)) {
-    return extractError(inputs);
+  if (extractError(inputs, 'head')) {
+    return extractError(inputs, 'head');
   }
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
@@ -104,8 +108,8 @@ const tail = function(readFileSync, existsFileSync, inputs, filesList) {
   let delimiter = "";
   let output = [];
   let result = {readFileSync, existsFileSync, inputs, output, delimiter}
-  if (extractError(inputs)) {
-    return extractError(inputs);
+  if (extractError(inputs, 'tail')) {
+    return extractError(inputs, 'tail');
   }
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
