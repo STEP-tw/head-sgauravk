@@ -1,4 +1,4 @@
-const createHeading = function(fileName) {
+const createHeading = function(fileName){
   return "==> " + fileName + " <==";
 };
 
@@ -15,9 +15,9 @@ const extractBytes = function(index, file, BytesRequired) {
 const getHeadType = function(inputs) {
   let list = inputs.join("");
   if (list.includes("-c")) {
-    return "extractBytes";
+    return extractBytes;
   }
-  return "extractLines";
+  return extractLines;
 };
 
 const findInteger = function(input) {
@@ -49,11 +49,13 @@ const findIllegalVal = function(input) {
 };
 
 const extractError = function(input, type) {
-  let object = { head: {extractLines: "line count --", extractBytes: "byte count --" },
-    tail: "offset --" };
-    let variable = object[type];
-    if(type == 'head'){
-      variable = object[type][getHeadType(input)]; }
+  let object = {head: {}, tail: "offset --"};
+  object['head'][extractLines] = "line count --";
+  object['head'][extractBytes] =  "byte count --";
+  let variable = object[type];
+  if(type == 'head'){
+    variable = object['head'][getHeadType(input)];
+  }
   if (findIllegalVal(input) || findInteger(input) < 1) {
     return (type+": illegal "+variable+" "+(findIllegalVal(input)||findInteger(input)));
   }
@@ -64,7 +66,7 @@ const headReducer = function(result,fileName){
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
     output.push(delimiter + createHeading(fileName));
-    output.push(eval(getHeadType(inputs))(0, content, findInteger(inputs) || 10));
+    output.push(getHeadType(inputs)(0, content, findInteger(inputs) || 10));
     result.delimiter = "\n";
     return result;
   }
@@ -82,21 +84,22 @@ const head = function(readFileSync, existsFileSync, inputs, filesList) {
   }
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
-    return (eval(getHeadType(inputs))(0, content, findInteger(inputs) || 10));
+    return getHeadType(inputs)(0, content, findInteger(inputs) || 10);
   }
   return filesList.reduce(headReducer,result)['output'].join('\n');
 };
 
 const tailReducer = function(result,fileName){
   const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
+  let object = {};
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    let object = {'extractLines':content.split('\n').length - (findInteger(result.inputs)||10),
-    'extractBytes':content.length - (findInteger(result.inputs)||10)};
+    object[extractLines] = content.split('\n').length - (findInteger(result.inputs)||10);
+    object[extractBytes] = content.length - (findInteger(result.inputs)||10);
     let index = object[getHeadType(inputs)];
     if (index < 0) { index = 0; }
     output.push(delimiter + createHeading(fileName));
-    output.push(eval(getHeadType(inputs))(index, content, findInteger(inputs)||10));
+    output.push(getHeadType(inputs)(index, content, findInteger(inputs)||10));
     result.delimiter = "\n";
     return result;
   }
@@ -109,16 +112,17 @@ const tail = function(readFileSync, existsFileSync, inputs, filesList) {
   let delimiter = "";
   let output = [];
   let result = {readFileSync, existsFileSync, inputs, output, delimiter};
+  let object = {};
   if (extractError(inputs, 'tail')) {
     return extractError(inputs, 'tail');
   }
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
-    let object = {'extractLines':content.split('\n').length - (findInteger(result.inputs)||10),
-      'extractBytes':content.length - (findInteger(result.inputs)||10)};
+    object[extractLines] = content.split('\n').length - (findInteger(result.inputs)||10);
+    object[extractBytes] = content.length - (findInteger(result.inputs)||10);
     let index = object[getHeadType(inputs)];
     if (index < 0) { index = 0; }
-    return (eval(getHeadType(inputs))(index, content, findInteger(inputs)||10));
+    return getHeadType(inputs)(index, content, findInteger(inputs)||10);
   }
   return filesList.reduce(tailReducer,result)['output'].join('\n');
 };

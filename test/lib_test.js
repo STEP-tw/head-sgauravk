@@ -63,12 +63,12 @@ describe("extractBytes", function(){
 describe("getHeadType", function(){
 
   it("should return the function according to the user input", function(){
-    assert.equal(getHeadType(["node", "head.js", "-n5"]), "extractLines");
-    assert.equal(getHeadType(["node", "head.js", "-c3", "file1"]),"extractBytes");
+    assert.equal(getHeadType(["node", "head.js", "-n5"]), extractLines);
+    assert.equal(getHeadType(["node", "head.js", "-c3", "file1"]), extractBytes);
   });
 
   it("should return extractLines function when no type is given", function(){
-    assert.equal(getHeadType(["node", "head.js"]), "extractLines");
+    assert.equal(getHeadType(["node", "head.js"]), extractLines);
   });
 
 });
