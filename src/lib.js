@@ -1,4 +1,4 @@
-const createHeading = function(fileName,filesListLength){
+const createHeading = function(fileName, filesListLength){
   if(filesListLength > 1) return "==> " + fileName + " <==";
   return '';
 };
@@ -60,11 +60,12 @@ const extractError = function(userArgs, option) {
 };
 
 const headReducer = function(result,fileName){
-  const {readFileSync, existsFileSync, userArgs, output, delimiter, index} = result;
+  const {readFileSync, existsFileSync, userArgs, output, delimiter, filesListLength} = result;
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    output.push(delimiter + createHeading(fileName,2));  //changing userArgs array
-    output.push(getOption(userArgs)(index, content, extractCount(userArgs) || 10));
+    let heading = delimiter + createHeading(fileName, filesListLength);
+    heading && output.push(heading);
+    output.push(getOption(userArgs)(0, content, extractCount(userArgs) || 10));
     result.delimiter = "\n";
     return result;
   }
@@ -77,12 +78,8 @@ const head = function(readFileSync, existsFileSync, userArgs, filesList) {
   let delimiter = "";
   let output = [];
   let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
-  result.index = 0;
+  result.filesListLength = filesList.length;
   if (extractError(userArgs, 'head')) return extractError(userArgs, 'head');
-  if(filesList.length == 1 && existsFileSync(filesList[0])){
-    let content = readFileSync(filesList[0], "utf8");
-    return getOption(userArgs)(0, content, extractCount(userArgs) || 10);
-  }
   return filesList.reduce(headReducer,result)['output'].join('\n');
 };
 
