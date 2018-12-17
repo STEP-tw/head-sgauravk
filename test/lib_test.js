@@ -3,8 +3,8 @@ const {
   createHeading,
   extractLines,
   extractBytes,
-  getHeadType,
-  findInteger,
+  getOption,
+  extractCount,
   findIllegalVal,
   extractError,
   head,
@@ -60,34 +60,34 @@ describe("extractBytes", function(){
 
 });
 
-describe("getHeadType", function(){
+describe("getOption", function(){
 
   it("should return the function according to the user input", function(){
-    assert.equal(getHeadType(["node", "head.js", "-n5"]), extractLines);
-    assert.equal(getHeadType(["node", "head.js", "-c3", "file1"]), extractBytes);
+    assert.equal(getOption(["node", "head.js", "-n5"]), extractLines);
+    assert.equal(getOption(["node", "head.js", "-c3", "file1"]), extractBytes);
   });
 
   it("should return extractLines function when no type is given", function(){
-    assert.equal(getHeadType(["node", "head.js"]), extractLines);
+    assert.equal(getOption(["node", "head.js"]), extractLines);
   });
 
 });
 
-describe("findInteger", function(){
+describe("extractCount", function(){
 
   it("should return the integer from input", function(){
-    assert.equal(findInteger(["-n1"]), 1);
-    assert.equal(findInteger(["./head.js", "-c5"]), 5);
+    assert.equal(extractCount(["-n1"]), 1);
+    assert.equal(extractCount(["./head.js", "-c5"]), 5);
   });
 
   it("should return NaN when input have no integer", function(){
-    assert.equal("" + findInteger(["-n", "-c"]), "" + NaN);
-    assert.equal("" + findInteger(["./head.js", "-c"]), "" + NaN);
+    assert.equal("" + extractCount(["-n", "-c"]), "" + NaN);
+    assert.equal("" + extractCount(["./head.js", "-c"]), "" + NaN);
   });
 
   it("should return first integer when input have more then one integer", function(){
-    assert.equal(findInteger(["-n1", "-c2"]), 1);
-    assert.equal(findInteger(["./head.js", "c", "12"]), 12);
+    assert.equal(extractCount(["-n1", "-c2"]), 1);
+    assert.equal(extractCount(["./head.js", "c", "12"]), 12);
   });
 
 });

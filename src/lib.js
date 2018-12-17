@@ -12,61 +12,58 @@ const extractBytes = function(index, file, BytesRequired) {
   return result;
 };
 
-const getHeadType = function(inputs) { //bad name inputs  --['-n', '10-c'] its work fine as per your logic
-  let list = inputs.join(""); //list ?? 
-  if (list.includes("-c")) {
+const getOption = function(userArgs) {
+  if (userArgs.join("").includes("-c")) {
     return extractBytes;
   }
   return extractLines;
 };
 
-const findInteger = function(input) { //bad name
+const extractCount = function(userArgs) {
   let index = 0;
-  let list = input.join(""); //list ??
-  while (!parseInt(list) && index < input.join().length) { //complax logic
-    if (parseInt(list) == 0) {
-      return 0;
-    }
-    list = input.join("");
+  let list = userArgs.join(""); //list ??
+  while (!parseInt(list) && index < userArgs.join().length) { //complax logic
+    if (parseInt(list) == 0) return 0;
+    list = userArgs.join("");
     index++;
     list = list.slice(index);
   }
-  if (!input.join("").includes("-c") && !input.join("").includes("-n")) {
+  if (!userArgs.join("").includes("-c") && !userArgs.join("").includes("-n")) {
     return Math.abs(parseInt(list));
   }
   return parseInt(list);
 };
 
-const findIllegalVal = function(input) { //unnecessory abbreviation of val, illigal spelling wrongly written
-  let list = "abdefghijklmopqrstuvwxyz"; //this could have a better way to solve
-  list = list.split("");  //bad argument name input
-  input = input.join("");
+const findIllegalVal = function(userArgs){ 
+  let list = "abdefghijklmopqrstuvwxyz";
+  list = list.split("");
+  userArgs = userArgs.join("");
   let result = "";
-  if (list.some(x => input.includes(x))) {
-    result = input.slice(2);
+  if (list.some(x => userArgs.includes(x))) {
+    result = userArgs.slice(2);
   }
   return result;
 };
 
-const extractError = function(input, type) {  //bad argument name input, type can be named batter,  complax logic
-  let object = {head: {}, tail: "offset --"}; // an object named as object ??
-  object['head'][extractLines] = "line count --";
-  object['head'][extractBytes] =  "byte count --";
-  let variable = object[type]; //bad name variable
-  if(type == 'head'){
-    variable = object['head'][getHeadType(input)];
+const extractError = function(userArgs, option) {
+  let output = {head: {}, tail: "offset --"};
+  output['head'][extractLines] = "line count --";
+  output['head'][extractBytes] =  "byte count --";
+  let variable = output[option]; //bad name variable
+  if(option == 'head'){
+    variable = output['head'][getOption(userArgs)];
   }
-  if (findIllegalVal(input) || findInteger(input) < 1) {
-    return (type+": illegal "+variable+" "+(findIllegalVal(input)||findInteger(input)));
+  if (findIllegalVal(userArgs) || extractCount(userArgs) < 1) {
+    return (option+": illegal "+variable+" "+(findIllegalVal(userArgs)||extractCount(userArgs)));
   }
 };
 
-const headReducer = function(result,fileName){ //poor name of function and args , It's doing too much
-  const {readFileSync, existsFileSync, inputs, output, delimiter} = result; // poor variable name input output
+const headReducer = function(result,fileName){
+  const {readFileSync, existsFileSync, userArgs, output, delimiter, index} = result;
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    output.push(delimiter + createHeading(fileName));  //changing input array
-    output.push(getHeadType(inputs)(0, content, findInteger(inputs) || 10));
+    output.push(delimiter + createHeading(fileName));  //changing userArgs array
+    output.push(getOption(userArgs)(index, content, extractCount(userArgs) || 10));
     result.delimiter = "\n";
     return result;
   }
@@ -75,31 +72,30 @@ const headReducer = function(result,fileName){ //poor name of function and args 
   return result;
 };
 
-const head = function(readFileSync, existsFileSync, inputs, filesList) { 
+const head = function(readFileSync, existsFileSync, userArgs, filesList) { 
   let delimiter = "";
   let output = [];
-  let result = {readFileSync, existsFileSync, inputs, output, delimiter};
-  if (extractError(inputs, 'head')) {
-    return extractError(inputs, 'head');
-  }
+  let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
+  result.index = 0;
+  if (extractError(userArgs, 'head')) return extractError(userArgs, 'head');
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
-    return getHeadType(inputs)(0, content, findInteger(inputs) || 10);
+    return getOption(userArgs)(0, content, extractCount(userArgs) || 10);
   }
   return filesList.reduce(headReducer,result)['output'].join('\n');
 };
 
 const tailReducer = function(result,fileName){//bad fucntion name, duplication bad variable name as well
-  const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
+  const {readFileSync, existsFileSync, userArgs, output, delimiter} = result;
   let object = {};
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    object[extractLines] = content.split('\n').length - (findInteger(result.inputs)||10);
-    object[extractBytes] = content.length - (findInteger(result.inputs)||10);
-    let index = object[getHeadType(inputs)];
+    object[extractLines] = content.split('\n').length - (extractCount(result.userArgs)||10);
+    object[extractBytes] = content.length - (extractCount(result.userArgs)||10);
+    let index = object[getOption(userArgs)];
     if (index < 0) { index = 0; }
     output.push(delimiter + createHeading(fileName));
-    output.push(getHeadType(inputs)(index, content, findInteger(inputs)||10));
+    output.push(getOption(userArgs)(index, content, extractCount(userArgs)||10));
     result.delimiter = "\n";
     return result;
   }
@@ -108,24 +104,23 @@ const tailReducer = function(result,fileName){//bad fucntion name, duplication b
   return result;
 };
 
-const tail = function(readFileSync, existsFileSync, inputs, filesList) {
+const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
   let delimiter = "";
   let output = [];
-  let result = {readFileSync, existsFileSync, inputs, output, delimiter};
+  let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
   let object = {};
-  if (extractError(inputs, 'tail')) {
-    return extractError(inputs, 'tail');
-  }
+  if (extractError(userArgs, 'tail')) return extractError(userArgs, 'tail');
   if(filesList.length == 1 && existsFileSync(filesList[0])){
     let content = readFileSync(filesList[0], "utf8");
-    object[extractLines] = content.split('\n').length - (findInteger(result.inputs)||10);
-    object[extractBytes] = content.length - (findInteger(result.inputs)||10);
-    let index = object[getHeadType(inputs)];
+    object[extractLines] = content.split('\n').length - (extractCount(result.userArgs)||10);
+    object[extractBytes] = content.length - (extractCount(result.userArgs)||10);
+    let index = object[getOption(userArgs)];
     if (index < 0) { index = 0; }
-    return getHeadType(inputs)(index, content, findInteger(inputs)||10);
+    result.index = index;
+    return getOption(userArgs)(index, content, extractCount(userArgs)||10);
   }
   return filesList.reduce(tailReducer,result)['output'].join('\n');
 };
 
 module.exports = { createHeading, extractLines, extractBytes, 
-  getHeadType, findInteger, findIllegalVal, extractError, head, tail }; // indent properly 
+  getOption, extractCount, findIllegalVal, extractError, head, tail };
