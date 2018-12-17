@@ -83,15 +83,22 @@ const head = function(readFileSync, existsFileSync, userArgs, filesList) {
   return filesList.reduce(headReducer,result)['output'].join('\n');
 };
 
+const getIndex = function(userArgs, fileContent){
+  let result = {head: 0}
+  let sampleObject = {};
+  sampleObject[extractLines] = fileContent.split('\n').length - (extractCount(userArgs)||10);
+  sampleObject[extractBytes] = fileContent.length - (extractCount(userArgs)||10);
+  result.tail = sampleObject[getOption(userArgs)];
+  if (result.tail < 0) { result.tail = 0; };
+  return result;
+};
+
 const tailReducer = function(result,fileName){
   const {readFileSync, existsFileSync, userArgs, output, delimiter, filesListLength} = result;
   let object = {};
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    object[extractLines] = content.split('\n').length - (extractCount(result.userArgs)||10);
-    object[extractBytes] = content.length - (extractCount(result.userArgs)||10);
-    let index = object[getOption(userArgs)];
-    if (index < 0) { index = 0; }
+    let index = getIndex(userArgs, content).tail;
     let heading = createHeading(fileName,filesListLength);
     heading && output.push(delimiter + heading);
     output.push(getOption(userArgs)(index, content, extractCount(userArgs)||10));
