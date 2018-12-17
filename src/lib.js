@@ -83,8 +83,8 @@ const head = function(readFileSync, existsFileSync, userArgs, filesList) {
   return filesList.reduce(headReducer,result)['output'].join('\n');
 };
 
-const tailReducer = function(result,fileName){//bad fucntion name, duplication bad variable name as well
-  const {readFileSync, existsFileSync, userArgs, output, delimiter} = result;
+const tailReducer = function(result,fileName){
+  const {readFileSync, existsFileSync, userArgs, output, delimiter, filesListLength} = result;
   let object = {};
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
@@ -92,7 +92,8 @@ const tailReducer = function(result,fileName){//bad fucntion name, duplication b
     object[extractBytes] = content.length - (extractCount(result.userArgs)||10);
     let index = object[getOption(userArgs)];
     if (index < 0) { index = 0; }
-    output.push(delimiter + createHeading(fileName,2));
+    let heading = createHeading(fileName,filesListLength);
+    heading && output.push(delimiter + heading);
     output.push(getOption(userArgs)(index, content, extractCount(userArgs)||10));
     result.delimiter = "\n";
     return result;
@@ -106,17 +107,8 @@ const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
   let delimiter = "";
   let output = [];
   let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
-  let object = {};
+  result.filesListLength = filesList.length;
   if (extractError(userArgs, 'tail')) return extractError(userArgs, 'tail');
-  if(filesList.length == 1 && existsFileSync(filesList[0])){
-    let content = readFileSync(filesList[0], "utf8");
-    object[extractLines] = content.split('\n').length - (extractCount(result.userArgs)||10);
-    object[extractBytes] = content.length - (extractCount(result.userArgs)||10);
-    let index = object[getOption(userArgs)];
-    if (index < 0) { index = 0; }
-    result.index = index;
-    return getOption(userArgs)(index, content, extractCount(userArgs)||10);
-  }
   return filesList.reduce(tailReducer,result)['output'].join('\n');
 };
 
