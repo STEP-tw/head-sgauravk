@@ -79,8 +79,9 @@ const head = function(readFileSync, existsFileSync, userArgs, filesList) {
   let output = [];
   let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
   result.filesListLength = filesList.length;
+  result.type = 'head'
   if (extractError(userArgs, 'head')) return extractError(userArgs, 'head');
-  return filesList.reduce(headReducer,result)['output'].join('\n');
+  return filesList.reduce(reducer,result)['output'].join('\n');
 };
 
 const getIndex = function(userArgs, fileContent){
@@ -93,20 +94,19 @@ const getIndex = function(userArgs, fileContent){
   return result;
 };
 
-const tailReducer = function(result,fileName){
-  const {readFileSync, existsFileSync, userArgs, output, delimiter, filesListLength} = result;
+const reducer = function(result,fileName){
+  const {readFileSync, existsFileSync, userArgs, output, delimiter, filesListLength, type} = result;
   let object = {};
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    let index = getIndex(userArgs, content).tail;
+    let index = getIndex(userArgs, content)[type];
     let heading = createHeading(fileName,filesListLength);
     heading && output.push(delimiter + heading);
     output.push(getOption(userArgs)(index, content, extractCount(userArgs)||10));
     result.delimiter = "\n";
-    return result;
-  }
+    return result; }
   result.delimiter = "\n";
-  output.push('tail: '+fileName+': No such file or directory');
+  output.push(type + ': ' + fileName + ': No such file or directory');
   return result;
 };
 
@@ -115,8 +115,9 @@ const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
   let output = [];
   let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
   result.filesListLength = filesList.length;
+  result.type = 'tail'
   if (extractError(userArgs, 'tail')) return extractError(userArgs, 'tail');
-  return filesList.reduce(tailReducer,result)['output'].join('\n');
+  return filesList.reduce(reducer,result)['output'].join('\n');
 };
 
 module.exports = { createHeading, extractLines, extractBytes, 
