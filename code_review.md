@@ -34,6 +34,5 @@ file name should be in cammel case
 - [ ]   2.for capital letter as option
 - [ ]   3.for options like -nt 10 
 - [ ]   4.for 0 count
-- [ ] 
 - [ ] all head and tail tests should be in one describe block
 - [ ]  -in it, blocks for single, inside it- for correct inputs, for erroneous inputs etc ...
