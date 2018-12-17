@@ -12,18 +12,18 @@ const extractBytes = function(index, file, BytesRequired) {
   return result;
 };
 
-const getHeadType = function(inputs) {
-  let list = inputs.join("");
+const getHeadType = function(inputs) { //bad name inputs  --['-n', '10-c'] its work fine as per your logic
+  let list = inputs.join(""); //list ?? 
   if (list.includes("-c")) {
     return extractBytes;
   }
   return extractLines;
 };
 
-const findInteger = function(input) {
+const findInteger = function(input) { //bad name
   let index = 0;
-  let list = input.join("");
-  while (!parseInt(list) && index < input.join().length) {
+  let list = input.join(""); //list ??
+  while (!parseInt(list) && index < input.join().length) { //complax logic
     if (parseInt(list) == 0) {
       return 0;
     }
@@ -37,9 +37,9 @@ const findInteger = function(input) {
   return parseInt(list);
 };
 
-const findIllegalVal = function(input) {
-  let list = "abdefghijklmopqrstuvwxyz";
-  list = list.split("");
+const findIllegalVal = function(input) { //unnecessory abbreviation of val, illigal spelling wrongly written
+  let list = "abdefghijklmopqrstuvwxyz"; //this could have a better way to solve
+  list = list.split("");  //bad argument name input
   input = input.join("");
   let result = "";
   if (list.some(x => input.includes(x))) {
@@ -48,11 +48,11 @@ const findIllegalVal = function(input) {
   return result;
 };
 
-const extractError = function(input, type) {
-  let object = {head: {}, tail: "offset --"};
+const extractError = function(input, type) {  //bad argument name input, type can be named batter,  complax logic
+  let object = {head: {}, tail: "offset --"}; // an object named as object ??
   object['head'][extractLines] = "line count --";
   object['head'][extractBytes] =  "byte count --";
-  let variable = object[type];
+  let variable = object[type]; //bad name variable
   if(type == 'head'){
     variable = object['head'][getHeadType(input)];
   }
@@ -61,11 +61,11 @@ const extractError = function(input, type) {
   }
 };
 
-const headReducer = function(result,fileName){
-  const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
+const headReducer = function(result,fileName){ //poor name of function and args , It's doing too much
+  const {readFileSync, existsFileSync, inputs, output, delimiter} = result; // poor variable name input output
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    output.push(delimiter + createHeading(fileName));
+    output.push(delimiter + createHeading(fileName));  //changing input array
     output.push(getHeadType(inputs)(0, content, findInteger(inputs) || 10));
     result.delimiter = "\n";
     return result;
@@ -75,7 +75,7 @@ const headReducer = function(result,fileName){
   return result;
 };
 
-const head = function(readFileSync, existsFileSync, inputs, filesList) {
+const head = function(readFileSync, existsFileSync, inputs, filesList) { 
   let delimiter = "";
   let output = [];
   let result = {readFileSync, existsFileSync, inputs, output, delimiter};
@@ -89,7 +89,7 @@ const head = function(readFileSync, existsFileSync, inputs, filesList) {
   return filesList.reduce(headReducer,result)['output'].join('\n');
 };
 
-const tailReducer = function(result,fileName){
+const tailReducer = function(result,fileName){//bad fucntion name, duplication bad variable name as well
   const {readFileSync, existsFileSync, inputs, output, delimiter} = result;
   let object = {};
   if(existsFileSync(fileName)){
@@ -128,4 +128,4 @@ const tail = function(readFileSync, existsFileSync, inputs, filesList) {
 };
 
 module.exports = { createHeading, extractLines, extractBytes, 
-  getHeadType, findInteger, findIllegalVal, extractError, head, tail }; 
+  getHeadType, findInteger, findIllegalVal, extractError, head, tail }; // indent properly 
