@@ -22,8 +22,8 @@ const getOption = function(userArgs) {
 
 const extractCount = function(userArgs) {
   let index = 0;
-  let list = userArgs.join(""); //list ??
-  while (!parseInt(list) && index < userArgs.join().length) { //complax logic
+  let list = userArgs.join("");
+  while (!parseInt(list) && index < userArgs.join().length) {
     if (parseInt(list) == 0) return 0;
     list = userArgs.join("");
     index++;
@@ -59,31 +59,6 @@ const extractError = function(userArgs, option) {
   }
 };
 
-const headReducer = function(result,fileName){
-  const {readFileSync, existsFileSync, userArgs, output, delimiter, filesListLength} = result;
-  if(existsFileSync(fileName)){
-    let content = readFileSync(fileName, "utf8");
-    let heading = delimiter + createHeading(fileName, filesListLength);
-    heading && output.push(heading);
-    output.push(getOption(userArgs)(0, content, extractCount(userArgs) || 10));
-    result.delimiter = "\n";
-    return result;
-  }
-  result.delimiter = "\n";
-  output.push('head: '+fileName+': No such file or directory');
-  return result;
-};
-
-const head = function(readFileSync, existsFileSync, userArgs, filesList) { 
-  let delimiter = "";
-  let output = [];
-  let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
-  result.filesListLength = filesList.length;
-  result.type = 'head'
-  if (extractError(userArgs, 'head')) return extractError(userArgs, 'head');
-  return filesList.reduce(reducer,result)['output'].join('\n');
-};
-
 const getIndex = function(userArgs, fileContent){
   let result = {head: 0}
   let sampleObject = {};
@@ -110,6 +85,16 @@ const reducer = function(result,fileName){
   return result;
 };
 
+const head = function(readFileSync, existsFileSync, userArgs, filesList) { 
+  let delimiter = "";
+  let output = [];
+  let result = {readFileSync, existsFileSync, userArgs, output, delimiter};
+  result.filesListLength = filesList.length;
+  result.type = 'head'
+  if (extractError(userArgs, 'head')) return extractError(userArgs, 'head');
+  return filesList.reduce(reducer,result)['output'].join('\n');
+};
+
 const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
   let delimiter = "";
   let output = [];
@@ -119,6 +104,7 @@ const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
   if (extractError(userArgs, 'tail')) return extractError(userArgs, 'tail');
   return filesList.reduce(reducer,result)['output'].join('\n');
 };
+
 
 module.exports = { createHeading, extractLines, extractBytes, 
   getOption, extractCount, findIllegalVal, extractError, head, tail };
