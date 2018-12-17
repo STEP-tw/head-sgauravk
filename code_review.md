@@ -1,7 +1,7 @@
 
 ### lib.js
--------
-```long file lib.js
+
+long file lib.js
 - [ ] parsing related function, error handelling relative function, formating related functions should have separated files not in lib.js 
 - [ ] extractBytes, extractLines can be one single function. 
 - [ ] line-15 : bad function name, bad variable name
@@ -18,10 +18,10 @@
 - [ ] line 131 : can be written in a batter way, so that it easy to understand
 - [ ] type can have better name
 - [ ] length can have better name
-```
+
 
 ### lib_test.js
-```file name should be in cammel case 
+file name should be in cammel case 
 - [ ] line 35 : error in it message.
 - [ ] line 38 : for 1 line and more than 1 should be in different it block
 - [ ] line 43, 85, 90, 105 : redundent test
@@ -37,5 +37,3 @@
 - [ ] 
 - [ ] all head and tail tests should be in one describe block
 - [ ]  -in it, blocks for single, inside it- for correct inputs, for erroneous inputs etc ...
-```
-
