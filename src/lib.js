@@ -1,5 +1,6 @@
-const createHeading = function(fileName){
-  return "==> " + fileName + " <==";
+const createHeading = function(fileName,filesListLength){
+  if(filesListLength > 1) return "==> " + fileName + " <==";
+  return '';
 };
 
 const extractLines = function(index, file, linesRequired) {
@@ -62,7 +63,7 @@ const headReducer = function(result,fileName){
   const {readFileSync, existsFileSync, userArgs, output, delimiter, index} = result;
   if(existsFileSync(fileName)){
     let content = readFileSync(fileName, "utf8");
-    output.push(delimiter + createHeading(fileName));  //changing userArgs array
+    output.push(delimiter + createHeading(fileName,2));  //changing userArgs array
     output.push(getOption(userArgs)(index, content, extractCount(userArgs) || 10));
     result.delimiter = "\n";
     return result;
@@ -94,7 +95,7 @@ const tailReducer = function(result,fileName){//bad fucntion name, duplication b
     object[extractBytes] = content.length - (extractCount(result.userArgs)||10);
     let index = object[getOption(userArgs)];
     if (index < 0) { index = 0; }
-    output.push(delimiter + createHeading(fileName));
+    output.push(delimiter + createHeading(fileName,2));
     output.push(getOption(userArgs)(index, content, extractCount(userArgs)||10));
     result.delimiter = "\n";
     return result;

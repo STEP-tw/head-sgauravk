@@ -14,17 +14,17 @@ const {
 
 describe("createHeading", function(){
 
-  it("should create a head line using a file name", function(){
-    assert.equal(createHeading("lib.js"), "==> lib.js <==");
-    assert.equal(createHeading("createHead.js"), "==> createHead.js <==");
+  it("should create a head line using a file name when filesListLength is greter then 1", function(){
+    assert.equal(createHeading("lib.js",2), "==> lib.js <==");
+    assert.equal(createHeading("createHead.js",3), "==> createHead.js <==");
   });
 
   it("should create a head line when file name is empty", function(){
-    assert.equal(createHeading(""), "==>  <==");
+    assert.equal(createHeading("",5), "==>  <==");
   });
 
-  it("should create a head line when no file name is given", function(){
-    assert.equal(createHeading(), "==> undefined <==");
+  it("should return a empty string when filesListLength is 1", function(){
+    assert.equal(createHeading('parseInput.js',1), "");
   });
 
 });
