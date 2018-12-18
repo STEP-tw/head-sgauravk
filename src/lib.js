@@ -46,5 +46,5 @@ const getFinalOutput = function(readFileSync, existsFileSync, userArgs, filesLis
 };
 
 module.exports = {
-  getFinalOutput
+  getFinalOutput, getIndex
 };
