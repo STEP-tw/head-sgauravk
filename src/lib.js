@@ -46,8 +46,5 @@ const getFinalOutput = function(readFileSync, existsFileSync, userArgs, filesLis
 };
 
 module.exports = {
-  extractCount,
-  extractIllegalCount,
-  extractError,
   getFinalOutput
 };
