@@ -41,4 +41,3 @@ module.exports = {createHeading,
   getOption,
   extractCount
 };
-
