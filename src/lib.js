@@ -96,17 +96,6 @@ const getContent = function(readFileSync, existsFileSync, userArgs, filesList, t
   return filesList.reduce(reducer, result)["output"].join("\n");
 };
 
-//const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
-//  let delimiter = "";
-//  let output = [];
-//  let result = { readFileSync, existsFileSync, userArgs, output, delimiter };
-//  result.filesListLength = filesList.length;
-//  result.type = "tail";
-//  if (extractError(userArgs, "tail")) return extractError(userArgs, "tail");
-//  return filesList.reduce(reducer, result)["output"].join("\n");
-//};
-
-
 module.exports = {
   createHeading,
   extractLines,
