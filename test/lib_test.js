@@ -5,7 +5,7 @@ const {
   extractBytes,
   getOption,
   extractCount,
-  findIllegalVal,
+  extractIllegalCount,
   extractError,
   head,
   tail
@@ -80,16 +80,16 @@ describe("extractCount", function() {
   });
 });
 
-describe("findIllegalVal", function() {
+describe("extractIllegalCount", function() {
   it("should return a empty string when no illegal count is given", function() {
-    assert.equal(findIllegalVal(["-n1"]), "");
-    assert.equal(findIllegalVal(["-n", "5"]), "");
+    assert.equal(extractIllegalCount(["-n1"]), "");
+    assert.equal(extractIllegalCount(["-n", "5"]), "");
   });
 
   it("should return the illegal value present in the input", function() {
-    assert.equal(findIllegalVal(["-nr"]), "r");
-    assert.equal(findIllegalVal(["-n", "r1"]), "r1");
-    assert.equal(findIllegalVal(["-n", "-1r"]), "-1r");
+    assert.equal(extractIllegalCount(["-nr"]), "r");
+    assert.equal(extractIllegalCount(["-n", "r1"]), "r1");
+    assert.equal(extractIllegalCount(["-n", "-1r"]), "-1r");
   });
 });
 

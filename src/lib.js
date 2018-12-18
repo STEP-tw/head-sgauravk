@@ -35,7 +35,7 @@ const extractCount = function(userArgs) {
   return parseInt(list);
 };
 
-const findIllegalVal = function(userArgs) {
+const extractIllegalCount = function(userArgs) {
   let list = "abdefghijklmopqrstuvwxyz";
   list = list.split("");
   userArgs = userArgs.join("");
@@ -52,9 +52,9 @@ const extractError = function(userArgs, option) {
   output["head"][extractBytes] = "byte count --";
   let variable = output[option];
   if (option == "head") variable = output["head"][getOption(userArgs)];
-  if (findIllegalVal(userArgs) || extractCount(userArgs) < 1)
+  if (extractIllegalCount(userArgs) || extractCount(userArgs) < 1)
     return (option + ": illegal " + variable + " " +
-      (findIllegalVal(userArgs) || extractCount(userArgs)));
+      (extractIllegalCount(userArgs) || extractCount(userArgs)));
 };
 
 const getIndex = function(userArgs, fileContent) {
@@ -113,7 +113,7 @@ module.exports = {
   extractBytes,
   getOption,
   extractCount,
-  findIllegalVal,
+  extractIllegalCount,
   extractError,
   head,
   tail
