@@ -126,7 +126,7 @@ describe("HEAD", function(){
     };
 
     let file = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
-    let randomText = "gaurav\nis\na\ngood\nboy";
+    let randomText = "only\ngreat\nminds\ncan\nafford\na\nsimple\nstyle";
 
     it("should return the first line of file", function() {
       assert.equal(getFinalOutput(readFile, existsFile, ["-n1"], [file],'head'), "1");
@@ -153,11 +153,11 @@ describe("HEAD", function(){
     });
 
     it("should return the given number of characters when count is given with spaces", function() {
-      assert.equal(getFinalOutput(readFile, existsFile, ["-c", "3"], [randomText],'head'), "gau");
+      assert.equal(getFinalOutput(readFile, existsFile, ["-c", "3"], [randomText],'head'), "onl");
     });
 
     it("should return the given number of characters when count is given without spaces", function() {
-      assert.equal(getFinalOutput(readFile, existsFile, ["-c7"], [randomText],'head'), "gaurav\n");
+      assert.equal(getFinalOutput(readFile, existsFile, ["-c7"], [randomText],'head'), "only\ngr");
     });
 
     it("should return the whole file when count is greter file size", function() {
@@ -166,7 +166,7 @@ describe("HEAD", function(){
   });
 
   describe("HEAD: for multiple file", function() {
-    let randomText = "gaurav\nis\na\ngood\nboy";
+    let randomText = "only\ngreat\nminds\ncan\nafford\na\nsimple\nstyle";
 
     let existsFile = function(file) {
       return [file, randomText].includes(file);
@@ -177,7 +177,7 @@ describe("HEAD", function(){
     };
 
     let readRandomText = function(randomText) {
-      return "gaurav\nis\na\ngood\nboy";
+      return "only\ngreat\nminds\ncan\nafford\na\nsimple\nstyle";
     };
 
     it("should return the first 10 lines of file when count is not specified", function() {
@@ -205,14 +205,14 @@ describe("HEAD", function(){
     });
 
     it("should return the given number of characters when count is given with spaces", function() {
-      let expectedOutput = "==> randomText <==\ngau";
+      let expectedOutput = "==> randomText <==\nonl";
       expectedOutput += "\n\n" + expectedOutput;
       assert.equal(
         getFinalOutput(readRandomText,existsFile,["-c", "3"],["randomText", "randomText"],'head'),expectedOutput);
     });
 
     it("should return the given number of characters when count is given without spaces", function() {
-      let expectedOutput = "==> randomText <==\ngaurav\n";
+      let expectedOutput = "==> randomText <==\nonly\ngr";
       expectedOutput += "\n\n" + expectedOutput;
       assert.equal(
         getFinalOutput(readRandomText, existsFile, ["-c7"], ["randomText", "randomText"],'head'),expectedOutput);
@@ -289,7 +289,7 @@ describe("TAIL", function(){
     };
 
     let file = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
-    let randomText = "gaurav\nis\na\ngood\nboy";
+    let randomText = "only\ngreat\nminds\ncan\nafford\na\nsimple\nstyle";
 
     it("should return the first line of file", function() {
       assert.equal(getFinalOutput(readFile, existsFile, ["-n1"], [file],'tail'), "10");
@@ -316,11 +316,11 @@ describe("TAIL", function(){
     });
 
     it("should return the given number of characters when count is given with spaces", function() {
-      assert.equal(getFinalOutput(readFile, existsFile, ["-c", "3"], [randomText],'tail'), "boy");
+      assert.equal(getFinalOutput(readFile, existsFile, ["-c", "3"], [randomText],'tail'), "yle");
     });
 
     it("should return the given number of characters when count is given without spaces", function() {
-      assert.equal(getFinalOutput(readFile, existsFile, ["-c7"], [randomText],'tail'), "ood\nboy");
+      assert.equal(getFinalOutput(readFile, existsFile, ["-c7"], [randomText],'tail'), "e\nstyle");
     });
 
     it("should return the whole file when count is greter file size", function() {
@@ -329,7 +329,7 @@ describe("TAIL", function(){
   });
 
   describe("TAIL: for multiple file", function() {
-    let randomText = "gaurav\nis\na\ngood\nboy";
+    let randomText = "only\ngreat\nminds\ncan\nafford\na\nsimple\nstyle";
 
     let existsFile = function(file) {
       return [file, randomText].includes(file);
@@ -340,7 +340,7 @@ describe("TAIL", function(){
     };
 
     let readRandomText = function(randomText) {
-      return "gaurav\nis\na\ngood\nboy";
+      return "only\ngreat\nminds\ncan\nafford\na\nsimple\nstyle";
     };
 
     it("should return the first 10 lines of file when count is not specified", function() {
@@ -372,14 +372,14 @@ describe("TAIL", function(){
     });
 
     it("should return the given number of characters when count is given with spaces", function() {
-      let expectedOutput = "==> randomText <==\nboy";
+      let expectedOutput = "==> randomText <==\nyle";
       expectedOutput += "\n\n" + expectedOutput;
       assert.equal(
         getFinalOutput(readRandomText,existsFile,["-c", "3"],["randomText", "randomText"],'tail'),expectedOutput);
     });
 
     it("should return the given number of characters when count is given without spaces", function() {
-      let expectedOutput = "==> randomText <==\nood\nboy";
+      let expectedOutput = "==> randomText <==\ne\nstyle";
       expectedOutput += "\n\n" + expectedOutput;
       assert.equal(
         getFinalOutput(readRandomText, existsFile, ["-c7"], ["randomText", "randomText"],'tail'),expectedOutput);
@@ -398,7 +398,7 @@ describe("TAIL", function(){
     };
 
     let readRandomText = function(randomText) {
-      return "gaurav\nis\na\ngood\nboy";
+      return "only\ngreat\nminds\ncan\nafford\na\nsimple\nstyle";
     };
 
     it("should return the error message when given number of line is 0", function() {
