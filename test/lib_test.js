@@ -6,9 +6,14 @@ const {
 } = require("../src/lib.js");
 
 describe("getIndex", function () {
+  let content = "i\nam\nresponsible\nfor\nmy\nown\nhappiness";
+
   it('should return the index according to user args and file content', function () {
-    let content = "i\nam\nresponsible\nfor\nmy\nown\nhappiness";
     assert.deepEqual(getIndex(['-n5'], content), { head: 0, tail: 2 });
+  });
+
+  it('should return the 0 index when file content length is less then count', function(){
+    assert.deepEqual(getIndex(['-n1000'], content), { head: 0, tail: 0 });
   });
 });
 
