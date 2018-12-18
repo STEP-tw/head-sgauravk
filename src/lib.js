@@ -86,7 +86,7 @@ const reducer = function(result, fileName) {
   return result;
 };
 
-const getContent = function(readFileSync, existsFileSync, userArgs, filesList, type) {
+const getFinalOutput = function(readFileSync, existsFileSync, userArgs, filesList, type) {
   let delimiter = "";
   let output = [];
   let result = { readFileSync, existsFileSync, userArgs, output, delimiter };
@@ -104,5 +104,5 @@ module.exports = {
   extractCount,
   extractIllegalCount,
   extractError,
-  getContent
+  getFinalOutput
 };
