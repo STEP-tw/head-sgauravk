@@ -86,25 +86,25 @@ const reducer = function(result, fileName) {
   return result;
 };
 
-const head = function(readFileSync, existsFileSync, userArgs, filesList) {
+const getContent = function(readFileSync, existsFileSync, userArgs, filesList, type) {
   let delimiter = "";
   let output = [];
   let result = { readFileSync, existsFileSync, userArgs, output, delimiter };
   result.filesListLength = filesList.length;
-  result.type = "head";
-  if (extractError(userArgs, "head")) return extractError(userArgs, "head");
+  result.type = type;
+  if (extractError(userArgs, type)) return extractError(userArgs, type);
   return filesList.reduce(reducer, result)["output"].join("\n");
 };
 
-const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
-  let delimiter = "";
-  let output = [];
-  let result = { readFileSync, existsFileSync, userArgs, output, delimiter };
-  result.filesListLength = filesList.length;
-  result.type = "tail";
-  if (extractError(userArgs, "tail")) return extractError(userArgs, "tail");
-  return filesList.reduce(reducer, result)["output"].join("\n");
-};
+//const tail = function(readFileSync, existsFileSync, userArgs, filesList) {
+//  let delimiter = "";
+//  let output = [];
+//  let result = { readFileSync, existsFileSync, userArgs, output, delimiter };
+//  result.filesListLength = filesList.length;
+//  result.type = "tail";
+//  if (extractError(userArgs, "tail")) return extractError(userArgs, "tail");
+//  return filesList.reduce(reducer, result)["output"].join("\n");
+//};
 
 
 module.exports = {
@@ -115,6 +115,5 @@ module.exports = {
   extractCount,
   extractIllegalCount,
   extractError,
-  head,
-  tail
+  getContent
 };
