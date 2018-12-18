@@ -8,10 +8,13 @@ const {
 } = require("../src/util.js");
 
 const {
-  extractIllegalCount,
-  extractError,
   getFinalOutput
 } = require("../src/lib.js");
+
+const {
+  extractIllegalCount,
+  extractError
+ } = require("../src/errorLib.js");
 
 
 describe("createHeading", function() {
