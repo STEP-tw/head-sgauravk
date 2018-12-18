@@ -5,10 +5,14 @@ const {
   extractBytes,
   getOption,
   extractCount,
+} = require("../src/util.js");
+
+const {
   extractIllegalCount,
   extractError,
   getFinalOutput
 } = require("../src/lib.js");
+
 
 describe("createHeading", function() {
   it("should create a head line using a file name when filesListLength is greter then 1", function() {
