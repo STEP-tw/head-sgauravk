@@ -4,9 +4,8 @@ const { parseUserInput } = require("./src/parseInput");
 
 const main = function() {
   let inputs = process.argv.slice(2);
-  console.log(getFinalOutput( fs.readFileSync, fs.existsSync,
-      parseUserInput(inputs).input,
-      parseUserInput(inputs).filesList, 'head'));
+  const { input, filesList } = parseUserInput(inputs);
+  console.log(getFinalOutput( fs.readFileSync, fs.existsSync, input, filesList, 'head'));
 };
 
 main();
