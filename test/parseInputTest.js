@@ -14,4 +14,8 @@ describe("parseUserInput", function() {
     assert.deepEqual(parseUserInput(userInput), expectedOutput);
   });
 
+  it('should return empty array of input when only file names is given', function(){
+    let expectedOutput = { input: [], filesList: ["readme.md"] };
+    assert.deepEqual(parseUserInput(['readme.md']), expectedOutput);
+  });
 });
