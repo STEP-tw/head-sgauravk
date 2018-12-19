@@ -20,7 +20,8 @@ long file lib.js
 - [x] length can have better name
 
 
-### lib_test.js
+### libTest.js
+
 file name should be in cammel case 
 - [x] line 35 : error in it message.
 - [ ] line 38 : for 1 line and more than 1 should be in different it block
