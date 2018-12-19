@@ -35,7 +35,8 @@ const extractCount = function(userArgs) {
   return parseInt(list);
 };
 
-module.exports = {createHeading,
+module.exports = {
+  createHeading,
   extractLines,
   extractBytes,
   getOption,
