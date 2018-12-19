@@ -1,10 +1,12 @@
-const { createHeading, extractLines,
-  extractBytes, getOption, extractCount
-} = require('./util.js');
+const {
+  createHeading,
+  extractLines,
+  extractBytes,
+  getOption,
+  extractCount
+} = require("./util.js");
 
-const {extractIllegalCount,
-   extractError
-  } = require("./errorLib.js");
+const { extractIllegalCount, extractError } = require("./errorLib.js");
 
 const getIndex = function(userArgs, fileContent) {
   let result = { head: 0 };
@@ -24,14 +26,15 @@ const reducer = function(result, fileName) {
     let index = getIndex(result.userArgs, content)[result.type];
     let heading = createHeading(fileName, result.filesListLength);
     heading && result.output.push(result.delimiter + heading);
-    result.output.push(getOption(result.userArgs)(index,content,
-      extractCount(result.userArgs) || 10));
+    result.output.push(getOption(result.userArgs)(index, content,
+        extractCount(result.userArgs) || 10));
     result.delimiter = "\n";
     return result;
   }
   result.delimiter = "\n";
   result.output.push(
-    result.type + ": " + fileName + ": No such file or directory");
+    result.type + ": " + fileName + ": No such file or directory"
+  );
   return result;
 };
 
@@ -45,6 +48,4 @@ const getFinalOutput = function(readFileSync, existsFileSync, userArgs, filesLis
   return filesList.reduce(reducer, result)["output"].join("\n");
 };
 
-module.exports = {
-  getFinalOutput, getIndex
-};
+module.exports = { getFinalOutput, getIndex };
