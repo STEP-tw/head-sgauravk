@@ -12,11 +12,11 @@ describe("getIndex", function () {
     assert.deepEqual(getIndex(['-n5'], content), { head: 0, tail: 2 });
   });
 
-  it('should return the 0 index of tail when file content length is less then count', function(){
+  it('should return the 0 index of tail when file content length is less then count', function () {
     assert.deepEqual(getIndex(['-n1000'], content), { head: 0, tail: 0 });
   });
 
-  it('should return always 0 index for head', function(){
+  it('should return always 0 index for head', function () {
     assert.deepEqual(getIndex(['-n2'], content), { head: 0, tail: 5 });
   });
 });
